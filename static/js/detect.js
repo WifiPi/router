@@ -1,0 +1,1 @@
+IN_LONGPLAY_WIFI = true;
