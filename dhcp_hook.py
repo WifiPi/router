@@ -2,8 +2,9 @@
 
 import sys
 import os
+import urllib
 import urllib2
-#import logging
+import datetime
 #import cgi
 
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -14,6 +15,13 @@ import urllib2
 
 if __name__ == "__main__":
     with open("/home/pi/testing/dhcp_hook.log", "a+") as f:
-        print >> f, sys.argv[1:]
-        urllib2.urlopen("http://127.0.0.1/api/play")
+        print >> f, datetime.datetime.now().isoformat(), sys.argv[1:]
 
+    #urllib2.urlopen("http://127.0.0.1/api/play")
+
+    data = {
+        "mac": sys.argv[2],
+        "ipv4": sys.argv[3],
+        "name": sys.argv[4],
+    }
+    urllib2.urlopen("http://127.0.0.1/api/device/add", urllib.urlencode(data))

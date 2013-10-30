@@ -12,5 +12,13 @@ $(function(){
     $(".icon-stop").click(function(){
         $.get("/api/stop");
     })
+
+    $(".music-play").click(function(){
+        $.get("/api/play");
+    })
+
+    $(".music-stop").click(function(){
+        $.get("/api/stop");
+    })
 });
 

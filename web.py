@@ -25,11 +25,21 @@ from setting import settings
 from controller import main
 #from controller import api
 #from controller import auth
+from controller import device
 
 handlers = [
     (r"/", main.MainHandler),
+    (r"/music", main.MusicHandler),
     (r"/api/play", main.PlayAPIHandler),
     (r"/api/stop", main.StopAPIHandler),
+
+    (r"/network", main.NetworkHandler),
+    (r"/message", main.NetworkHandler),
+
+    (r"/device", device.DeviceHandler),
+    (r"/api/device/add", device.DeviceAddAPIHandler),
+    (r"/api/device/monitor", device.DeviceMonitorAPIHandler),
+
     (r"/static/(.*)", tornado.web.StaticFileHandler, dict(path=settings['static_path'], default_filename='index.html')),
 ]
 

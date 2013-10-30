@@ -96,9 +96,20 @@ class MainHandler(BaseHandler):
     def get(self):
         self.render("../template/main.html")
 
+class MusicHandler(BaseHandler):
+    def get(self):
+        self.render("../template/music.html")
+
+class NetworkHandler(BaseHandler):
+    def get(self):
+        self.render("../template/network.html")
+
+
+
+
 class PlayAPIHandler(BaseHandler):
     def get(self):
-        music.play("15bce0a605beaa38e669f026d5697a5e.mp3")
+        music.random_song()
         self.finish({})
 
 class StopAPIHandler(BaseHandler):

@@ -37,14 +37,14 @@ fi
 
 
 while true; do
-    result=$(ifconfig wlan0|grep "inet addr:192.168.10.1")
+    result=$(ifconfig wlan0|grep "inet addr:{{ router_ip }}")
     if [[ "$result" != "" ]]
     then
         /etc/init.d/dnsmasq restart
         break
     else
         while true; do
-            result=$(ifconfig wlan0|grep "inet addr:192.168.10.1")
+            result=$(ifconfig wlan0|grep "inet addr:{{ router_ip }}")
             if [[ "$result" != "" ]]
             then
                 break

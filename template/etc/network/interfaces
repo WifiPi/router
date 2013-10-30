@@ -1,0 +1,20 @@
+auto lo
+
+iface lo inet loopback
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+iface wlan0 inet static 
+address {{ router_ip }}
+netmask {{ router_mask }}
+
+iface default inet dhcp
+
+{% if pppoe %}
+auto dsl-provider
+iface dsl-provider inet ppp
+pre-up /sbin/ifconfig eth0 up # line maintained by pppoeconf
+provider dsl-provider
+{% endif %}
+
+auto eth0

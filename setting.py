@@ -1,7 +1,7 @@
 import os
 
 import json
-#import tornado.database
+import tornado.database
 
 
 settings = {
@@ -15,11 +15,4 @@ settings = {
     "debug": True,
 }
 
-
-#if settings["debug"]:
-    #conn = tornado.database.Connection("/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock", "boss", "root", "root")
-    #conn = tornado.database.Connection("127.0.0.1", "test", "root", "root")
-    #conn1 = tornado.database.Connection("127.0.0.1", "test1", "root", "root")
-    #conn2 = tornado.database.Connection("127.0.0.1", "test2", "root", "root")
-    #conn3 = tornado.database.Connection("127.0.0.1", "test3", "root", "root")
-    #ring = [conn1, conn2] # I love the name Ring
+conn = tornado.database.Connection("127.0.0.1", "test", "root", "root")

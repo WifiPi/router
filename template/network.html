@@ -10,7 +10,7 @@
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width" />
 
-    <title>Music</title>
+    <title>Network</title>
 
     <!-- Included CSS Files (Compressed) -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -29,41 +29,43 @@
 </head>
 <body>
 <div class="container">
-    <div id="longplay_wifi" class="hide" style="border: 1px solid orange; background-color: red; padding: 10px; margin: 10px 0 10px 0;">
-        You're using LongPlay Wifi
-    </div>
-
-    <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0; height:150px;">
-        <!--div class="icon-backward"></div>
-        <div class="icon-forward"></div>
-        <div class="icon-pause"></div-->
-        <div class="span-2">
-            <div class="music-play" style="background-image:url(/static/img/play_stop.gif);  background-position: -180px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
-            <div class="music-stop" style="background-image:url(/static/img/play_stop.gif);  background-position: -336px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
-        </div>
-        <div class="span-22">
-            The Music you're listening: <br /><br />
-            <b>Nine Million Bicycles - Katie Melua</b><br />
-            <div class="icon-heart"></div>Like the song on Facebook at <b>ABC Resturent</b> <br />
-        </div>
-        <br />
-    </div>
 
     <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
-        We have menu: <br />
+        <label>WIFI SSID</label>
+        <input />
+        <br />
+        <br />
 
-        <b>Main Course</b><br />
-        <b>Drink</b><br />
+        <label>Gateway IP Range</label>
+        <select>
+            <option>10</option>
+            <option>192</option>
+        </select>
+        <select>
+            <option>0</option>
+            <option>168</option>
+        </select>
+        <select>
+            <option>0</option>
+        </select>
+        2 - 255
     </div>
 
     <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
-        Shops around: <br />
+        The current devices:
 
-        <b>Wallmart Mall</b><br />
-        <b>7-ELEVEN</b><br />
     </div>
 
     <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+        <label>WAN</label>
+        <select>
+            <option>PPPoE</option>
+            <option>DHCP</option>
+            <option>Static</option>
+        </select>
+    </div>
+
+    <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
         Tell your friends: <br />
 
         <b>How to drive here?</b> <input type="email" /> <input type="submit" /> <br />

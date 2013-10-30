@@ -1,1 +1,1 @@
-IN_LONGPLAY_WIFI = true;
+var IN_LONGPLAY_WIFI = true;
