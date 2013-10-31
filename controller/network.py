@@ -71,10 +71,11 @@ update-rc.d watch-wlan0 defaults
 def setup(settings):
     assert 'wan' in settings
     if settings['wan'] == 'pppoe':
+        assert 'pppoe_username' in settings
+        assert 'pppoe_password' in settings
+    elif settings['wan'] == 'dhcp':
         pass
-    else if settings['wan'] == 'dhcp':
-        pass
-    else if settings['wan'] == 'static':
+    elif settings['wan'] == 'static':
         pass
     #else if settings['wan'] == 'client':
         # not config as an AP
@@ -85,18 +86,49 @@ def setup(settings):
         #return
 
     assert 'ssid' in settings
+    assert 'ssid_password' in settings
     assert 'router_ip' in settings
     assert 'router_mask' in settings
     assert 'dhcp_range_start' in settings
     assert 'dhcp_range_end' in settings
 
+    root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
+    # or root_path = '/'
+    print root_path
+
     #hostapd
+    with open(root_path + "etc/hostapd/hostapd.conf", "w") as f:
+        print >> f, loader.load("etc/hostapd/hostapd.conf").generate(**settings)
 
     #dnsmasq
+    with open(root_path + "etc/dnsmasq.conf", "w") as f:
+        print >> f, loader.load("etc/dnsmasq.conf").generate(**settings)
 
     #network interface
+    with open(root_path + "etc/network/interfaces", "w") as f:
+        print >> f, loader.load("etc/network/interfaces").generate(**settings)
 
     #ignore sysctl.conf
 
     #reinstall watch-wlan0
+    with open(root_path + "etc/init.d/watch-wlan0", "w") as f:
+        print >> f, loader.load("etc/init.d/watch-wlan0").generate(**settings)
 
+
+class NetworkHandler(BaseHandler):
+    def get(self):
+        self.render("../template/network.html")
+
+class NetworkChangeAPIHandler(BaseHandler):
+    def get(self):
+        setup({
+            'wan': 'pppoe',
+            'pppoe_username': '',
+            'pppoe_password': '',
+            'ssid': 'LongPlay',
+            'ssid_password': 'raspberry',
+            'router_ip': '192.168.10.1',
+            'router_mask': '255.255.255.0',
+            'dhcp_range_start': '192.168.10.2',
+            'dhcp_range_end': '192.168.10.254',
+        })

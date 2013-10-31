@@ -26,6 +26,7 @@ from controller import main
 #from controller import api
 #from controller import auth
 from controller import device
+from controller import network
 
 handlers = [
     (r"/", main.MainHandler),
@@ -33,8 +34,9 @@ handlers = [
     (r"/api/play", main.PlayAPIHandler),
     (r"/api/stop", main.StopAPIHandler),
 
-    (r"/network", main.NetworkHandler),
-    (r"/message", main.NetworkHandler),
+    (r"/network", network.NetworkHandler),
+    (r"/api/network/change", network.NetworkChangeAPIHandler),
+    (r"/message", main.MessageHandler),
 
     (r"/device", device.DeviceHandler),
     (r"/api/device/add", device.DeviceAddAPIHandler),

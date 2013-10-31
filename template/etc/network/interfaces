@@ -10,11 +10,11 @@ netmask {{ router_mask }}
 
 iface default inet dhcp
 
-{% if pppoe %}
+{% if wan == 'pppoe' %}
 auto dsl-provider
 iface dsl-provider inet ppp
 pre-up /sbin/ifconfig eth0 up # line maintained by pppoeconf
 provider dsl-provider
-{% endif %}
+{% end if %}
 
 auto eth0

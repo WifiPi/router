@@ -100,9 +100,9 @@ class MusicHandler(BaseHandler):
     def get(self):
         self.render("../template/music.html")
 
-class NetworkHandler(BaseHandler):
+class MessageHandler(BaseHandler):
     def get(self):
-        self.render("../template/network.html")
+        self.render("../template/message.html")
 
 
 
