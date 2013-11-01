@@ -69,10 +69,21 @@ update-rc.d watch-wlan0 defaults
 """
 
 def setup(settings):
+    root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
+    # or root_path = '/'
+    print root_path
+
     assert 'wan' in settings
     if settings['wan'] == 'pppoe':
         assert 'pppoe_username' in settings
         assert 'pppoe_password' in settings
+
+        with open(root_path + "etc/ppp/peers/dsl-provider", "w") as f:
+            print >> f, loader.load("etc/ppp/peers/dsl-provider").generate(**settings)
+
+        with open(root_path + "etc/ppp/pap-secrets", "w") as f:
+            print >> f, loader.load("etc/ppp/pap-secrets").generate(**settings)
+
     elif settings['wan'] == 'dhcp':
         pass
     elif settings['wan'] == 'static':
@@ -91,10 +102,6 @@ def setup(settings):
     assert 'router_mask' in settings
     assert 'dhcp_range_start' in settings
     assert 'dhcp_range_end' in settings
-
-    root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
-    # or root_path = '/'
-    print root_path
 
     #hostapd
     with open(root_path + "etc/hostapd/hostapd.conf", "w") as f:
@@ -127,8 +134,8 @@ class NetworkChangeAPIHandler(BaseHandler):
             'pppoe_password': '',
             'ssid': 'LongPlay',
             'ssid_password': 'raspberry',
-            'router_ip': '192.168.10.1',
+            'router_ip': '192.168.1.1',
             'router_mask': '255.255.255.0',
-            'dhcp_range_start': '192.168.10.2',
-            'dhcp_range_end': '192.168.10.254',
+            'dhcp_range_start': '192.168.1.2',
+            'dhcp_range_end': '192.168.1.254',
         })

@@ -15,5 +15,5 @@ noaccomp
 default-asyncmap
 
 plugin rp-pppoe.so eth0
-user "{{ pppoe_user }}"
+user "{{ pppoe_username }}"
 usepeerdns
