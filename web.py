@@ -33,9 +33,16 @@ handlers = [
     (r"/music", main.MusicHandler),
     (r"/api/play", main.PlayAPIHandler),
     (r"/api/stop", main.StopAPIHandler),
+    (r"/api/music/play", main.PlayAPIHandler),
+    (r"/api/music/stop", main.StopAPIHandler),
+    (r"/api/music/sleep", main.StopAPIHandler),
+    (r"/api/music/like", main.StopAPIHandler),
+    (r"/api/music/turnoff", main.StopAPIHandler),
+    (r"/api/music/shuffle", main.StopAPIHandler),
 
     (r"/network", network.NetworkHandler),
     (r"/api/network/change", network.NetworkChangeAPIHandler),
+    (r"/api/network", network.NetworkChangeAPIHandler),
     (r"/message", main.MessageHandler),
 
     (r"/device", device.DeviceHandler),
@@ -46,23 +53,10 @@ handlers = [
 ]
 
 '''
-    (r"/item", main.ItemHandler),
-    (r"/edit_item", main.EditItemHandler),
-    (r"/submit", main.SubmitHandler),
-    (r"/comment", main.CommentHandler),
-    (r"/edit_comment", main.EditCommentHandler),
-    (r"/verify_email", main.VerifyEmailHandler),
-    (r"/invite", main.InviteHandler),
-
     (r"/setting", main.SettingHandler),
     (r"/login", main.LoginHandler),
     (r"/logout", main.LogoutHandler),
 
-    (r"/api/login", api.LoginAPIHandler),
-    (r"/api/signup", api.SignupAPIHandler),
-    (r"/api/user_info", api.UserInfoAPIHandler),
-    (r"/api/get_feed", api.FeedAPIHandler),
-    (r"/api/get_item", api.ItemAPIHandler),
     (r"/api/profile_img", api.ProfileImgAPIHandler),
 
     (r"/api/like", api.LikeAPIHandler),

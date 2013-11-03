@@ -26,6 +26,8 @@ apt-get install -y dnsmasq
 apt-get install -y pppoe
 apt-get install -y mpg123
 apt-get install -y supervisor
+apt-get install -y mysql-server
+apt-get install -y python-mysqldb
 
 #host=192.168.1.100
 #wget --recursive http://$host/

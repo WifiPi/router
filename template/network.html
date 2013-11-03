@@ -32,43 +32,72 @@
 
     <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
         <label>WIFI SSID</label>
-        <input />
+        <input value="{{ ssid }}"/>
         <br />
         <br />
 
-        <label>Gateway IP Range</label>
+        <label>Secure</label>
         <select>
-            <option>10</option>
-            <option>192</option>
+            <option>None</option>
+            <option>WAP2</option>
         </select>
-        <select>
-            <option>0</option>
-            <option>168</option>
-        </select>
-        <select>
-            <option>0</option>
-        </select>
-        2 - 255
+        <br />
+
+        <label>Password</label>
+        <input value=""/>
+        <input type="button" value="SAVE and RESTART WIFI"/>
     </div>
 
     <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
-        The current devices:
-
-    </div>
-
-    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
         <label>WAN</label>
         <select>
             <option>PPPoE</option>
             <option>DHCP</option>
             <option>Static</option>
         </select>
+        <br />
+
+        <label>PPPoE Username</label>
+        <input value=""/>
+
+        <label>Password</label>
+        <input value=""/>
+
+        <input type="button" value="TEST PPPoE"/>
+        <br />
+        <br />
+
+        <label>Static IP</label>
+        <input value=""/>
+
+        <label>Mask</label>
+        <input value=""/>
+        <input type="button" value="SAVE DHCP and RESTART NETWORK"/>
+        <br />
+        <br />
+
+        <label>DHCP</label>
+        <input type="button" value="RESTART NETWORK and GET IP by DHCP"/>
+
+    </div>
+
+    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+        <label>LAN IP Range</label>
+        <select id="lan-ip-range">
+            <option>192</option>
+            <option>10</option>
+        </select>
+        <span class="ip192"> . 168 . </span><input class="ip192" value="1"/><span class="ip192"> . X</span>
+        <span class="ip10 hide"> . </span><input class="ip10 hide" value="0"/><span class="ip10 hide"> . X . X</span>
+        <br />
+        <label>Mask</label>
+        <span class="mask192">255 . 255 . 255 . 0</span>
+        <span class="mask10 hide">255 . 255 . 0 . 0</span>
+        <br />
+        <input type="button" value="SAVE LAN SETTING"/>
     </div>
 
     <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
-        Tell your friends: <br />
-
-        <b>How to drive here?</b> <input type="email" /> <input type="submit" /> <br />
     </div>
 </div>
 </body>
@@ -77,7 +106,9 @@
 <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
+<script type="text/coffeescript" src="/static/coffee/network.coffee"></script>
+
 <script type="text/javascript" src="//localhost/static/js/detect.js"></script>
 
 </html>

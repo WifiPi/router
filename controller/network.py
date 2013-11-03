@@ -68,11 +68,12 @@ update-rc.d watch-wlan0 defaults
 #reboot
 """
 
-def setup(settings):
-    root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
-    # or root_path = '/'
-    print root_path
+root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
+# or root_path = '/'
+print root_path
 
+
+def save(settings):
     assert 'wan' in settings
     if settings['wan'] == 'pppoe':
         assert 'pppoe_username' in settings
@@ -102,6 +103,7 @@ def setup(settings):
     assert 'router_mask' in settings
     assert 'dhcp_range_start' in settings
     assert 'dhcp_range_end' in settings
+    assert 'secure' in settings
 
     #hostapd
     with open(root_path + "etc/hostapd/hostapd.conf", "w") as f:
@@ -121,14 +123,52 @@ def setup(settings):
     with open(root_path + "etc/init.d/watch-wlan0", "w") as f:
         print >> f, loader.load("etc/init.d/watch-wlan0").generate(**settings)
 
+def load():
+    result = {}
+    with open(root_path + "etc/hostapd/hostapd.conf", "r") as f:
+        for i in f.readlines():
+            if i.startswith("ssid="):
+                line = i.strip()
+                result["ssid"] = line[len("ssid="):]
+
+            elif i.startswith("wpa_passphrase="):
+                line = i.strip()
+                result["ssid_password"] = line[len("wpa_passphrase="):]
+
+        if result.get("ssid_password"):
+            result["secure"] = "wap2"
+        else:
+            result["secure"] = "none"
+
+    with open(root_path + "etc/dnsmasq.conf", "r") as f:
+        for i in f.readlines():
+            if i.startswith("ssid="):
+                line = i.strip()
+                result["ssid"] = line[len("ssid="):]
+
+    with open(root_path + "etc/network/interfaces", "r") as f:
+        for i in f.readlines():
+            if i.startswith("address "):
+                line = i.strip()
+                result["address"] = line[len("address "):]
+
+            elif i.startswith("netmask "):
+                line = i.strip()
+                result["netmask"] = line[len("netmask "):]
+
+    with open(root_path + "etc/init.d/watch-wlan0", "r") as f:
+        pass
+
+    return result
 
 class NetworkHandler(BaseHandler):
     def get(self):
-        self.render("../template/network.html")
+        settings = load()
+        self.render("../template/network.html", **settings)
 
 class NetworkChangeAPIHandler(BaseHandler):
     def get(self):
-        setup({
+        save({
             'wan': 'pppoe',
             'pppoe_username': '',
             'pppoe_password': '',
@@ -138,4 +178,14 @@ class NetworkChangeAPIHandler(BaseHandler):
             'router_mask': '255.255.255.0',
             'dhcp_range_start': '192.168.1.2',
             'dhcp_range_end': '192.168.1.254',
+            'secure': 'wpa2',
         })
+
+        self.finish(load())
+
+class NetworkAPIHandler(BaseHandler):
+    def get(self):
+        pass
+
+    def post(self):
+        pass
