@@ -42,7 +42,10 @@ handlers = [
 
     (r"/network", network.NetworkHandler),
     (r"/api/network/change", network.NetworkChangeAPIHandler),
-    (r"/api/network", network.NetworkChangeAPIHandler),
+    (r"/api/network/wifi", network.NetworkWifiAPIHandler),
+    (r"/api/network/wan", network.NetworkWanAPIHandler),
+    (r"/api/network/lan", network.NetworkLanAPIHandler),
+
     (r"/message", main.MessageHandler),
 
     (r"/device", device.DeviceHandler),

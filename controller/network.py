@@ -69,7 +69,8 @@ update-rc.d watch-wlan0 defaults
 """
 
 root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
-# or root_path = '/'
+# or 
+root_path = '/'
 print root_path
 
 
@@ -124,7 +125,7 @@ def save(settings):
         print >> f, loader.load("etc/init.d/watch-wlan0").generate(**settings)
 
 def load():
-    result = {}
+    result = {"wan":"dhcp"}
     with open(root_path + "etc/hostapd/hostapd.conf", "r") as f:
         for i in f.readlines():
             if i.startswith("ssid="):
@@ -136,7 +137,7 @@ def load():
                 result["ssid_password"] = line[len("wpa_passphrase="):]
 
         if result.get("ssid_password"):
-            result["secure"] = "wap2"
+            result["secure"] = "wpa2"
         else:
             result["secure"] = "none"
 
@@ -150,14 +151,40 @@ def load():
         for i in f.readlines():
             if i.startswith("address "):
                 line = i.strip()
-                result["address"] = line[len("address "):]
+                result["router_ip"] = line[len("address "):]
 
             elif i.startswith("netmask "):
                 line = i.strip()
-                result["netmask"] = line[len("netmask "):]
+                result["router_mask"] = line[len("netmask "):]
 
-    with open(root_path + "etc/init.d/watch-wlan0", "r") as f:
-        pass
+            elif i.startswith("auto dsl-provider"):
+                result["wan"] = "pppoe"
+
+    with open(root_path + "etc/ppp/peers/dsl-provider", "r") as f1:
+        for i in f1.readlines():
+            if i.startswith("user "):
+                result["pppoe_username"] = i.strip()[len("user "):].strip('"')
+
+                with open(root_path + "etc/ppp/pap-secrets", "r") as f2:
+                    for i in f2.readlines():
+                        if i.startswith('"%s"' % result["pppoe_username"]):
+                            result["pppoe_password"] = i.strip()[len('"%s" * ' % result["pppoe_username"]):].strip('"')
+
+    ip_segments = result["router_ip"].split(".")
+    if ip_segments[0] == "192":
+        ip_segments[3] = "2"
+        result["dhcp_range_start"] = ".".join(ip_segments)
+        ip_segments[3] = "255"
+        result["dhcp_range_end"] = ".".join(ip_segments)
+
+    elif ip_segments[0] == "10":
+        ip_segments[2], ip_segments[3] = "0","2"
+        result["dhcp_range_start"] = ".".join(ip_segments)
+        ip_segments[2], ip_segments[3] = "255","255"
+        result["dhcp_range_end"] = ".".join(ip_segments)
+
+    #with open(root_path + "etc/init.d/watch-wlan0", "r") as f:
+    #    pass
 
     return result
 
@@ -169,23 +196,75 @@ class NetworkHandler(BaseHandler):
 class NetworkChangeAPIHandler(BaseHandler):
     def get(self):
         save({
+            'ssid': 'LongPlay',
+            'ssid_password': 'raspberry',
+            'secure': 'wpa2',
+
             'wan': 'pppoe',
             'pppoe_username': '',
             'pppoe_password': '',
-            'ssid': 'LongPlay',
-            'ssid_password': 'raspberry',
+
             'router_ip': '192.168.1.1',
             'router_mask': '255.255.255.0',
             'dhcp_range_start': '192.168.1.2',
             'dhcp_range_end': '192.168.1.254',
-            'secure': 'wpa2',
         })
 
         self.finish(load())
 
-class NetworkAPIHandler(BaseHandler):
-    def get(self):
-        pass
-
+class NetworkWifiAPIHandler(BaseHandler):
     def post(self):
-        pass
+        settings = load()
+        secure = self.get_argument("secure")
+        settings['secure'] = secure
+        settings['ssid'] = self.get_argument("ssid")
+
+        if secure == "wpa2":
+            settings["ssid_password"] = self.get_argument("ssid_password")
+
+        save(settings)
+        self.finish({})
+
+        os.system("/etc/init.d/hostapd restart")
+        os.system("/etc/init.d/watch-wlan0")
+
+class NetworkWanAPIHandler(BaseHandler):
+    def post(self):
+        settings = load()
+
+        wan = self.get_argument("wan")
+        settings["wan"] = wan
+        if wan == "pppoe":
+            settings["pppoe_username"] = self.get_argument("pppoe_username")
+            settings["pppoe_password"] = self.get_argument("pppoe_password")
+
+        save(settings)
+        os.system("poff -a")
+        os.system("pon dsl-provider")
+        self.finish({})
+
+class NetworkLanAPIHandler(BaseHandler):
+    def post(self):
+        settings = load()
+        router_ip = self.get_argument("router_ip")
+        settings['router_ip'] = router_ip
+
+        ip_segments = router_ip.split(".")
+        if ip_segments[0] == "192":
+            settings['router_mask'] = '255.255.255.0'
+            ip_segments[3] = "2"
+            settings["dhcp_range_start"] = ".".join(ip_segments)
+            ip_segments[3] = "255"
+            settings["dhcp_range_end"] = ".".join(ip_segments)
+
+        elif ip_segments[0] == "10":
+            settings['router_mask'] = '255.255.0.0'
+            ip_segments[2], ip_segments[3] = "0","2"
+            settings["dhcp_range_start"] = ".".join(ip_segments)
+            ip_segments[2], ip_segments[3] = "255","255"
+            settings["dhcp_range_end"] = ".".join(ip_segments)
+
+        save(settings)
+        self.finish({})
+        os.system("/etc/init.d/networking restart")
+        os.system("/etc/init.d/watch-wlan0")

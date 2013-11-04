@@ -38,7 +38,7 @@ def get_devices():
     for result in conn.query("SELECT * FROM device_log"):
         devices[result['ipv4']] = result['name'], result['mac']
     for result in conn.query("SELECT * FROM device_monitor"):
-        monitored_devices[result['ipv4']] = result['name'], result['mac']
+        monitored_devices[result['ipv4']] = result['name']
 get_devices()
 
 class DeviceHandler(BaseHandler):

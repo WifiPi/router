@@ -25,76 +25,105 @@
     <![endif]-->
 
     <style>
+    #lan-panel select{
+        width: 64px;
+    }
+    #lan-panel input{
+        width: 50px;
+    }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
+    <div style="background-color: #3bd7ea;">
+        <img src="/static/img/logo.gif" />
+        GETTING START / DOWNLOAD / BUY / FAQ / DIY Your Wireless Router<br />
+        Powered by Raspberry Pi
+    </div>
+
+    <div style="border: 1px solid black; padding: 10px; margin: 10px 0 10px 0;">
         <label>WIFI SSID</label>
-        <input value="{{ ssid }}"/>
+        <input id="ssid" type="text" value="{{ ssid }}"/>
         <br />
         <br />
 
         <label>Secure</label>
-        <select>
-            <option>None</option>
-            <option>WAP2</option>
+        <select id="wifi-password-select">
+            <option {{ 'selected' if secure == 'none' else '' }} value="none">None</option>
+            <option {{ 'selected' if secure == 'wpa2' else '' }} value="wpa2">WPA2</option>
         </select>
         <br />
 
-        <label>Password</label>
-        <input value=""/>
-        <input type="button" value="SAVE and RESTART WIFI"/>
+        <div class="wifi-password-panel {{ 'hide' if secure == 'none' else '' }}">
+            <label>Password</label>
+            <!--input type="password" value="{{ ssid_password }}"/-->
+            <input id="ssid_password" type="text" value="{{ ssid_password }}"/>
+            <br />
+            <!--input type="checkbox" checked class="btn" />
+            <span>Show Password</span-->
+        </div>
+        <br />
+        <button id="wifi-save" type="button" class="btn">SAVE and RESTART WIFI</button>
     </div>
 
     <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
         <label>WAN</label>
-        <select>
-            <option>PPPoE</option>
-            <option>DHCP</option>
-            <option>Static</option>
+        <select id="wan-connect-type">
+            <option {{ 'selected' if wan == 'pppoe' else '' }} value="pppoe">PPPoE</option>
+            <option {{ 'selected' if wan == 'dhcp' else '' }} value="dhcp">DHCP</option>
+            <!--option {{ 'selected' if wan == 'static' else '' }} value="static">Static</option-->
         </select>
         <br />
 
-        <label>PPPoE Username</label>
-        <input value=""/>
+        <div class="wan-pppoe-panel {{ 'hide' if wan != 'pppoe' else '' }}">
+            <label>PPPoE Username</label>
+            <input id="pppoe_username" type="text" value="{{ pppoe_username }}"/>
 
-        <label>Password</label>
-        <input value=""/>
+            <label>Password</label>
+            <input id="pppoe_password" type="text" value="{{ pppoe_password }}"/>
+            <br />
 
-        <input type="button" value="TEST PPPoE"/>
-        <br />
-        <br />
+            <button id="wan-pppoe-save" type="button" class="btn">SAVE and TEST PPPoE</button>
+            <br />
+            <br />
+        </div>
 
-        <label>Static IP</label>
-        <input value=""/>
+        <div class="wan-static-panel {{ 'hide' if wan != 'static' else '' }}">
+            <label>Static IP</label>
+            <input type="text" value=""/>
 
-        <label>Mask</label>
-        <input value=""/>
-        <input type="button" value="SAVE DHCP and RESTART NETWORK"/>
-        <br />
-        <br />
+            <label>Mask</label>
+            <input type="text" value=""/>
+            <br />
 
-        <label>DHCP</label>
-        <input type="button" value="RESTART NETWORK and GET IP by DHCP"/>
+            <button id="wan-static-save" type="button" class="btn">SAVE STATIC and RESTART NETWORK</button>
+            <br />
+            <br />
+        </div>
 
+        <div class="wan-dhcp-panel {{ 'hide' if wan != 'dhcp' else '' }}">
+            <!--label>DHCP</label-->
+            <button id="wan-dhcp-save" type="button" class="btn">RESTART NETWORK and GET IP by DHCP</button>
+        </div>
     </div>
 
-    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+    <div id="lan-panel" style="border: 1px solid green; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
         <label>LAN IP Range</label>
         <select id="lan-ip-range">
-            <option>192</option>
-            <option>10</option>
+            <option {{ 'selected' if router_ip.startswith('192') else '' }}>192</option>
+            <option {{ 'selected' if router_ip.startswith('10') else '' }}>10</option>
         </select>
-        <span class="ip192"> . 168 . </span><input class="ip192" value="1"/><span class="ip192"> . X</span>
-        <span class="ip10 hide"> . </span><input class="ip10 hide" value="0"/><span class="ip10 hide"> . X . X</span>
+
+        <span class="ip192 {{ 'hide' if router_ip.startswith('10') else '' }}"> . <input type="text" disabled="true" value="168"/> . <input id="ip192-segment-2" type="text" value="{{ router_ip.split('.')[2] if router_ip.startswith('192') else '1' }}"/> . <input type="text" disabled="true" value="*"/></span>
+        <span class="ip10 {{ 'hide' if router_ip.startswith('192') else '' }}"> . <input id="ip10-segment-1" type="text" class="ip10" value="{{ router_ip.split('.')[1] if router_ip.startswith('10') else '0' }}"/> . <input type="text" disabled="true" value="*"/> . <input type="text" disabled="true" value="*"/></span>
         <br />
+
         <label>Mask</label>
-        <span class="mask192">255 . 255 . 255 . 0</span>
-        <span class="mask10 hide">255 . 255 . 0 . 0</span>
+        <span class="mask192 {{ 'hide' if router_ip.startswith('10') else '' }}"><input type="text" disabled="true" value="255"/> . <input type="text" disabled="true" value="255"/> . <input type="text" disabled="true" value="255"/> . <input type="text" disabled="true" value="0"/></span>
+        <span class="mask10 {{ 'hide' if router_ip.startswith('192') else '' }}"><input type="text" disabled="true" value="255"/> . <input type="text" disabled="true" value="255"/> . <input type="text" disabled="true" value="0"/> . <input type="text" disabled="true" value="0"/></span>
         <br />
-        <input type="button" value="SAVE LAN SETTING"/>
+        <button id="lan-save" type="button" class="btn">SAVE LAN SETTING</button>
     </div>
 
     <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
