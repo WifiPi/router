@@ -28,20 +28,24 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <div id="longplay_wifi" class="hide" style="border: 1px solid orange; background-color: red; padding: 10px; margin: 10px 0 10px 0;">
-        You're using LongPlay Wifi
-    </div>
 
-    <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0; height:150px;">
+{#% include "../template/include/header.html" %#}
+
+<div class="container">
+
+    <!--div class="row" id="wifipi_wifi" class="hide" style="border: 1px solid orange; background-color: red; padding: 10px; margin: 10px 0 10px 0;">
+        You're using WifiPi
+    </div-->
+
+    <div class="row" style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
         <!--div class="icon-backward"></div>
         <div class="icon-forward"></div>
         <div class="icon-pause"></div-->
-        <div class="span-2">
+        <div class="span2">
             <div class="music-play" style="background-image:url(/static/img/play_stop.gif);  background-position: -180px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
             <div class="music-stop" style="background-image:url(/static/img/play_stop.gif);  background-position: -336px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
         </div>
-        <div class="span-22">
+        <div class="span7 hide">
             The Music you're listening: <br /><br />
             <b>Nine Million Bicycles - Katie Melua</b><br />
             <div class="icon-heart"></div>Like the song on Facebook at <b>ABC Resturent</b> <br />
@@ -49,25 +53,25 @@
         <br />
     </div>
 
-    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
+    <!--div class="row" style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
         We have menu: <br />
 
         <b>Main Course</b><br />
         <b>Drink</b><br />
     </div>
 
-    <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
+    <div class="row" style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
         Shops around: <br />
 
         <b>Wallmart Mall</b><br />
         <b>7-ELEVEN</b><br />
     </div>
 
-    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+    <div class="row" style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
         Tell your friends: <br />
 
         <b>How to drive here?</b> <input type="email" /> <input type="submit" /> <br />
-    </div>
+    </div-->
 </div>
 </body>
 
@@ -75,7 +79,10 @@
 <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 
+<script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
+<script type="text/coffeescript" src="/static/coffee/upload.coffee"></script>
+
 <script type="text/javascript" src="/static/js/main.js"></script>
-<script type="text/javascript" src="//localhost/static/js/detect.js"></script>
+<script type="text/javascript" src="//wifi/static/js/detect.js"></script>
 
 </html>

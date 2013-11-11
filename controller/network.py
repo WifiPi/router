@@ -239,8 +239,9 @@ class NetworkWanAPIHandler(BaseHandler):
             settings["pppoe_password"] = self.get_argument("pppoe_password")
 
         save(settings)
-        os.system("poff -a")
-        os.system("pon dsl-provider")
+        os.system("/usr/bin/poff -a")
+        if wan == "pppoe":
+            os.system("/usr/bin/pon dsl-provider")
         self.finish({})
 
 class NetworkLanAPIHandler(BaseHandler):

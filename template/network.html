@@ -36,13 +36,9 @@
 <body>
 <div class="container">
 
-    <div style="background-color: #3bd7ea;">
-        <img src="/static/img/logo.gif" />
-        GETTING START / DOWNLOAD / BUY / FAQ / DIY Your Wireless Router<br />
-        Powered by Raspberry Pi
-    </div>
+{% include "../template/include/header.html" %}
 
-    <div style="border: 1px solid black; padding: 10px; margin: 10px 0 10px 0;">
+    <div class="row" style="border: 1px solid black; padding: 10px; margin: 10px 0 10px 0;">
         <label>WIFI SSID</label>
         <input id="ssid" type="text" value="{{ ssid }}"/>
         <br />

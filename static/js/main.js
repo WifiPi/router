@@ -1,8 +1,8 @@
-var IN_LONGPLAY_WIFI = false;
+var IN_WIFIPI_WIFI = false;
 
 $(function(){
-    if(IN_LONGPLAY_WIFI){
-        $("#longplay_wifi").show();
+    if(IN_WIFIPI_WIFI){
+        $("#wifipi_wifi").show();
     }
 
     $(".icon-play").click(function(){

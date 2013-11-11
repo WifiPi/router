@@ -11,11 +11,6 @@ netmask 255.255.255.0
 iface default inet dhcp
 
 
-auto dsl-provider
-iface dsl-provider inet ppp
-pre-up /sbin/ifconfig eth0 up # line maintained by pppoeconf
-provider dsl-provider
-
 
 auto eth0
 
