@@ -1,3 +1,10 @@
 #header {
     background-color: #3bd7ea;
 }
+
+#upload{
+	border: 3px dashed red;
+	height: 80px;
+	line-height: 80px;
+	text-align: center;
+}

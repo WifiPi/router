@@ -16,3 +16,5 @@ settings = {
 }
 
 conn = tornado.database.Connection("127.0.0.1", "test", "root", "root")
+
+ring = [conn]

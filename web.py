@@ -40,6 +40,10 @@ handlers = [
     (r"/api/music/turnoff", main.StopAPIHandler),
     (r"/api/music/shuffle", main.StopAPIHandler),
 
+    (r"/api/upload_mp3_html5_slice", main.UploadMp3Html5SliceAPIHandler),
+    (r"/api/add_mp3_by_filehash", main.AddMp3ByFilehashAPIHandler),
+
+
     (r"/network", network.NetworkHandler),
     (r"/api/network/change", network.NetworkChangeAPIHandler),
     (r"/api/network/wifi", network.NetworkWifiAPIHandler),
