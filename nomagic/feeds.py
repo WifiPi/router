@@ -125,7 +125,7 @@ def update_fileinfo(filehash, user_id, id3info = None, title = None, rev = None)
         if title:
             fileinfo["title"] = title
         assert nomagic._node(filehash).execute_rowcount("INSERT INTO entities (id, body) VALUES(%s, %s)",\
-                                                                filehash, _pack(fileinfo))
+                                                                filehash, nomagic._pack(fileinfo))
 
     user = nomagic._get_entity_by_id(user_id)
     if user:

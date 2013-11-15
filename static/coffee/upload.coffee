@@ -20,19 +20,19 @@ $ ->
             #    alert "You need to login"
             #    return
 
+            files = null
             if evt.target.files
                 files = evt.target.files
             else
                 files = evt.dataTransfer.files
 
             file_lists.push(files)
-
             file_index = 0
             startingByte = 0
             endingByte = 0
 
             uploadFile = (file) ->
-                file = file
+
                 t =  if file.type then file.type else 'n/a'
                 reader = new FileReader()
 
@@ -42,8 +42,20 @@ $ ->
                         xhr.upload.addEventListener('progress', updateProgress, false)
                     return xhr
 
+                uploadNextFile = () ->
+                    #console.log files, file_index
+                    file_index++
+                    if file_index < files.length
+                        uploadFile(files[file_index])
+                    else
+                        file_lists.shift()
+                        if file_lists.length > 0
+                            file_index = 0
+                            files = file_lists[0]
+                            uploadFile(files[file_index])
+
                 updateProgress = (evt) ->
-                    console.log startingByte, file.size, evt.loaded, evt.total
+                    #console.log startingByte, file.size, evt.loaded, evt.total
                     $("#uploading_files").text("Uploading file #{file_index+1} of #{files.length} at #{(startingByte + (endingByte-startingByte)*evt.loaded/evt.total)/file.size*100}%")
 
                 reader.onload = (evt) ->
@@ -68,11 +80,7 @@ $ ->
                                         $("#list li").slice(0, -10).slideUp () ->
                                             $("#list li").slice(0, -10).remove()
 
-                                        file_index++
-                                        if file_index < files.length
-                                            uploadFile(files[file_index])
-                                        else
-                                            uploading = false
+                                        uploadNextFile()
                                         return
 
                                     else if data["result"] == "filehash verify failed"
@@ -103,11 +111,8 @@ $ ->
 
                                 if data["result"] == "exists"
                                     $("#uploading_files").text("File #{file_index+1} of #{files.length} exists.")
-                                    file_index++
-                                    if file_index < files.length
-                                        uploadFile(files[file_index])
-                                    else
-                                        uploading = false
+
+                                    uploadNextFile()
                                     return
 
                                 else if data["result"] == "not found"
@@ -128,16 +133,11 @@ $ ->
                                     alert "Not support slice API"
                                 reader.readAsDataURL(blob)
 
-
                             if data["result"] == "exists"
                                 $("#uploading_files").text("File #{file_index+1} of #{files.length} exists.")
 
                                 $.post "/api/add_mp3_by_filehash", "filehash": md5, () ->
-                                    file_index++
-                                    if file_index < files.length
-                                        uploadFile(files[file_index])
-                                    else
-                                        uploading = false
+                                    uploadNextFile()
                                 return
                             else
                                 uploadFilePart(data)
@@ -146,12 +146,9 @@ $ ->
 
                 reader.readAsDataURL(file)
 
-            if uploading
-                alert "You need to wait for uploading finished"
-                return
-            else
-                uploading = true
+            if file_lists.length == 1
                 uploadFile(files[file_index])
+
 
         handleDragEnter = (evt) ->
             #if logged_in
