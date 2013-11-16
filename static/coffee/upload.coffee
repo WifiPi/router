@@ -66,7 +66,7 @@ $ ->
                         $.ajax
                             type: 'POST',
                             dataType: 'json',
-                            url: '/api/html5_upload_file_slice',
+                            url: '/api/file/upload_html5_slice',
                             data:
                                 "tempfile": tempfile,
                                 "name": file.name,

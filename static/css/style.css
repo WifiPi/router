@@ -3,8 +3,15 @@
 }
 
 #upload{
-	border: 3px dashed red;
-	height: 80px;
-	line-height: 80px;
-	text-align: center;
+    margin-top: 30px;
+    border: 3px dashed gray;
+    height: 380px;
+    line-height: 380px;
+    text-align: center;
+    position: fixed;
+}
+
+#picker{
+    margin-top: 30px;
+    margin-bottom: 80px;
 }

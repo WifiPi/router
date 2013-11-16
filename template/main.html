@@ -10,7 +10,7 @@
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width" />
 
-    <title>Music</title>
+    <title>Files</title>
 
     <!-- Included CSS Files (Compressed) -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -37,18 +37,20 @@
         You're using WifiPi
     </div-->
 
-    <div class="row" style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
+    <div class="row" style="padding: 10px; margin: 0 0 10px 0;">
         <!--div class="icon-backward"></div>
         <div class="icon-forward"></div>
         <div class="icon-pause"></div-->
-        <div class="span2">
+        <div class="span2 hide">
             <div class="music-play" style="background-image:url(/static/img/play_stop.gif);  background-position: -180px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
             <div class="music-stop" style="background-image:url(/static/img/play_stop.gif);  background-position: -336px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
         </div>
-        <div class="span7" id="upload">
-            Drag files here!
+        <div class="span3 hidden-phone" id="upload">
+            Drag files to Upload
         </div>
-        <div class="span7 hide">
+        <div class="span7 offset4" id="picker">
+        </div>
+        <div class="span9 hide">
             The Music you're listening: <br /><br />
             <b>Nine Million Bicycles - Katie Melua</b><br />
             <div class="icon-heart"></div>Like the song on Facebook at <b>ABC Resturent</b> <br />
@@ -84,8 +86,31 @@
 
 <script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
 <script type="text/coffeescript" src="/static/coffee/upload.coffee"></script>
+<script type="text/coffeescript" src="/static/coffee/browser.coffee"></script>
 
 <script type="text/javascript" src="/static/js/main.js"></script>
 <script type="text/javascript" src="//wifi/static/js/detect.js"></script>
+
+<script type="text/template" id="folder-template">
+<div class="folder row-fluid" path="<%= path %>">
+    <div class="icon-folder-open"></div>
+    <%= display %>
+</div>
+</script>
+
+<script type="text/template" id="parent-folder-template">
+<div class="folder row-fluid" path="<%= path %>">
+    <div class="icon-arrow-up"></div>
+    Parent
+</div>
+</script>
+
+<script type="text/template" id="file-template">
+<div class="file row-fluid">
+    <div class="icon-file"></div>
+    <a href="<%= path %>" target="_blank"><%= display %></a>
+</div>
+</script>
+
 
 </html>

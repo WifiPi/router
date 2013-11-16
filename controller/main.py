@@ -167,3 +167,9 @@ class Html5UploadFileSliceAPIHandler(BaseHandler):
             self.finish({"result": "error"})
             return
 
+class FileListAPIHandler(BaseHandler):
+    def get(self):
+        self.finish({
+            "folders":["123","345","234"],
+            "files":["abc", "def def def def def def def def def def def def def def def def def def def def def def def def def def def ", "xyz"]*10
+        })
