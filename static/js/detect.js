@@ -1,1 +1,1 @@
-var IN_WIFIPI_WIFI = true;
+IN_WIFIPI_WIFI = true;
