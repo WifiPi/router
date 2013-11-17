@@ -1,8 +1,8 @@
 #!/bin/bash
 # run as root
 
-cp testing/etc/ppp/peers/dsl-provider /etc/ppp/peers/
-cp testing/etc/ppp/pap-secrets /etc/ppp/
+cp /var/www/router/etc/ppp/peers/dsl-provider /etc/ppp/peers/
+cp /var/www/router/etc/ppp/pap-secrets /etc/ppp/
 pon dsl-provider
 
 
@@ -26,31 +26,36 @@ apt-get install -y dnsmasq
 apt-get install -y pppoe
 apt-get install -y mpg123
 apt-get install -y supervisor
+
 apt-get install -y mysql-server
 apt-get install -y python-mysqldb
+
+apt-get install -y mtools
+apt-get install -y ntfsprogs
+apt-get install -y e2fsprogs
 
 #host=192.168.1.100
 #wget --recursive http://$host/
 #mv $host testing
 
-cp testing/etc/default/hostapd /etc/default/
-cp testing/etc/hostapd/hostapd.conf /etc/hostapd/
+cp /var/www/router/etc/default/hostapd /etc/default/
+cp /var/www/router/etc/hostapd/hostapd.conf /etc/hostapd/
 
-cp testing/etc/dnsmasq.conf /etc/
-cp testing/etc/dhcp/dhclient.conf /etc/dhcp/
+cp /var/www/router/etc/dnsmasq.conf /etc/
+cp /var/www/router/etc/dhcp/dhclient.conf /etc/dhcp/
 
-cp testing/etc/network/interfaces /etc/network/
-cp testing/etc/network/if-pre-up.d/iptables /etc/network/if-pre-up.d/
-cp testing/etc/iptables.up.rules /etc/
+cp /var/www/router/etc/network/interfaces /etc/network/
+cp /var/www/router/etc/network/if-pre-up.d/iptables /etc/network/if-pre-up.d/
+cp /var/www/router/etc/iptables.up.rules /etc/
 chmod +x /etc/network/if-pre-up.d/iptables
 
-cp testing/etc/supervisor/conf.d/router.conf /etc/supervisor/conf.d/
+cp /var/www/router/etc/supervisor/conf.d/router.conf /etc/supervisor/conf.d/
 supervisorctl reload
 
-cp testing/etc/sysctl.conf /etc/
+cp /var/www/router/etc/sysctl.conf /etc/
 echo "1" > /proc/sys/net/ipv4/ip_forward
 
-cp testing/etc/init.d/watch-wlan0 /etc/init.d/
+cp /var/www/router/etc/init.d/watch-wlan0 /etc/init.d/
 chmod +x /etc/init.d/watch-wlan0
 update-rc.d watch-wlan0 defaults
 

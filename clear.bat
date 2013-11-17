@@ -10,7 +10,7 @@ rm .bash_history
 rm .viminfo
 rm -r .vim
 
-cd /home/pi/testing/
+cd /var/www/router/
 
 echo "" > wifi_ping.log
 echo "" > dhcp_hook.log
@@ -21,9 +21,9 @@ find . |grep ".py$"|xargs rm
 rm update.bat
 rm clear.bat
 
-cd /home/pi/testing/static/temp/
+cd /var/www/router/static/temp/
 rm *
-cd /home/pi/testing/static/cache/
+cd /var/www/router/static/cache/
 rm *
 
 cd /var/log/

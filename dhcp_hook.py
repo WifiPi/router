@@ -14,7 +14,7 @@ import datetime
 
 
 if __name__ == "__main__":
-    with open("/home/pi/testing/dhcp_hook.log", "a+") as f:
+    with open("/var/www/router/dhcp_hook.log", "a+") as f:
         print >> f, datetime.datetime.now().isoformat(), sys.argv[1:]
 
     #urllib2.urlopen("http://127.0.0.1/api/play")

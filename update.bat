@@ -1,2 +1,3 @@
-rsync -avz . pi@192.168.10.1:~/testing/ --delete --exclude=*.log --exclude=*.pyc --exclude=*.mp3 --exclude=.DS_Store --exclude=.git/ --exclude=.gitignore --exclude=static/temp/ --exclude=static/cache/
-#ssh pi@192.168.10.1 "python ~/testing/compile.py; find ~/testing/|grep '.py$'|xargs rm"
+rsync -avz . pi@10.0.0.1:/var/www/router/ --delete --exclude=*.log --exclude=*.pyc --exclude=*.mp3 --exclude=.DS_Store --exclude=.git/ --exclude=.gitignore --exclude=static/temp/ --exclude=static/cache/
+#ssh pi@10.0.0.1 "cd /var/www/router/; python compile.py; find /var/www/router/|grep '.py$'|xargs rm"
+ssh pi@10.0.0.1 "cd /var/www/router/; python compile.py"
