@@ -21,6 +21,12 @@ COMMIT
 :INPUT ACCEPT [2353:252286]
 :OUTPUT ACCEPT [224:16937]
 :POSTROUTING ACCEPT [3:144]
+{% if web_auth_by_mac_enable %}
+{% for mac in macs %}
+-A PREROUTING -p tcp -m mac --mac-source {{ mac }} -m tcp --dport 80 -j ACCEPT
+{% end for %}
+-A PREROUTING -p tcp -m tcp --dport 80 -j DNAT --to-destination {{ router_ip }}:80
+{% end if %}
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -o ppp0 -j MASQUERADE
 COMMIT

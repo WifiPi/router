@@ -69,10 +69,7 @@ update-rc.d watch-wlan0 defaults
 """
 
 root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
-# or 
 root_path = '/'
-print root_path
-
 
 def save(settings):
     assert 'wan' in settings

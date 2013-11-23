@@ -1,6 +1,14 @@
 #!/bin/bash
 # run as root
 
+cp static/8188eu.ko /lib/modules/3.6.11+/kernel/drivers/net/wireless/
+depmod -a
+modprobe 8188eu
+
+dpkg -i static/libpcap0.8_1.3.0-1_armhf.deb
+dpkg -i static/ppp_2.4.5-5.1_armhf.deb
+dpkg -i static/pppoe_3.8-3_armhf.deb
+
 cp /var/www/router/etc/ppp/peers/dsl-provider /etc/ppp/peers/
 cp /var/www/router/etc/ppp/pap-secrets /etc/ppp/
 pon dsl-provider
@@ -16,7 +24,7 @@ pon dsl-provider
 #apt-get remove -y --purge x11-common
 #apt-get autoremove
 
-#apt-get update
+apt-get update
 
 ## install packages
 

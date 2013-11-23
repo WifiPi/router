@@ -6,9 +6,9 @@ rm .bash_history
 cd /home/pi/
 #rm -r .ssh/
 rm -r .aptitude/
-rm .bash_history
-rm .viminfo
 rm -r .vim
+rm .viminfo
+rm .bash_history
 
 cd /var/www/router/
 
@@ -19,12 +19,13 @@ find . |grep ".pyc$"|xargs rm
 python -c "import compileall; compileall.compile_dir(r'.')"
 find . |grep ".py$"|xargs rm
 rm update.bat
+rm setup.sh
 rm clear.bat
 
-cd /var/www/router/static/temp/
-rm *
-cd /var/www/router/static/cache/
-rm *
+#cd /var/www/router/static/temp/
+#rm *
+#cd /var/www/router/static/cache/
+#rm *
 
 cd /var/log/
 rm *.0
