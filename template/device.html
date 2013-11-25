@@ -51,28 +51,15 @@
                 <td>{{ name }}</td>
                 <td>{{ ipv4 }}</td>
             </tr>
-            <tr class="hide" id="meun-{{ mac.replace(":", "-") }}">
+            <tr class="" id="menu-{{ mac.replace(":", "-") }}">
                 <td colspan="2">
                     <!--select>
                         <option>block</option>
                         <option>mobile phone</option>
                     </select-->
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
-                    <input type="button" value="set as Music activator" />
-                    <input type="button" value="block Wifi access!" />
+                    <input type="button" class="music_activator" value="Set as Music activator" />
+                    <input type="button" class="block" value="Block Wifi access!" />
+                    <input type="button" class="unlock" value="Get online!" />
                 </td>
             </tr>
             {% end for %}
@@ -81,11 +68,8 @@
     </div>
 
     <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
-        <label>WAN</label>
+        <label></label>
         <select>
-            <option>PPPoE</option>
-            <option>DHCP</option>
-            <option>Static</option>
         </select>
     </div>
 
@@ -101,7 +85,10 @@
 <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 
+<script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
+<script type="text/coffeescript" src="/static/coffee/device.coffee"></script>
+
 <script type="text/javascript" src="/static/js/main.js"></script>
-<script type="text/javascript" src="//localhost/static/js/detect.js"></script>
+<script type="text/javascript" src="//wifi/static/js/detect.js"></script>
 
 </html>

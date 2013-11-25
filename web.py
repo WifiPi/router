@@ -23,6 +23,7 @@ from setting import settings
 #from setting import conn
 
 from controller import main
+from controller import base
 #from controller import api
 #from controller import auth
 from controller import device
@@ -30,6 +31,12 @@ from controller import network
 
 handlers = [
     (r"/", main.MainHandler),
+    (r"/wifi/ping/", device.PongHandler),
+    (r"/wifi/login/", device.LoginHandler),
+    (r"/wifi/auth/", device.AuthHandler), #/wifi/auth/?stage=login&ip=10.0.0.18&mac=84:38:35:52:ea:08&token=1234&incoming=0&outgoing=0&gw_id=0810781EE54D
+    (r"/wifi/portal/", device.PortalHandler),
+    (r"/wifi/gw_message.php", device.GWMessageHandler), #http://10.0.0.1/wifi/gw_message.php?message=denied
+
     (r"/music", main.MusicHandler),
     (r"/api/play", main.PlayAPIHandler),
     (r"/api/stop", main.StopAPIHandler),

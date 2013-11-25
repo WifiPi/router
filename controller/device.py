@@ -33,8 +33,8 @@ import music
 loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
 
 
-root_path = '/'
 root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
+root_path = '/'
 
 with open(root_path + "etc/network/interfaces", "r") as f:
     for i in f.readlines():
@@ -90,3 +90,27 @@ class DeviceMonitorAPIHandler(BaseHandler):
     """
     def get(self):
         self.finish(monitored_devices)
+
+
+class PongHandler(BaseHandler):
+    def get(self):
+        self.finish("Pong")
+
+class LoginHandler(BaseHandler):
+    def get(self):
+        self.redirect("http://10.0.0.1:2060/wifidog/auth?token=1234")
+        #self.finish("Please input username and password")
+
+class AuthHandler(BaseHandler):
+    def get(self):
+        #self.finish("Auth: 1")
+        self.finish("Auth: 0")
+
+class PortalHandler(BaseHandler):
+    def get(self):
+        self.finish("Welcome")
+
+class GWMessageHandler(BaseHandler):
+    def get(self):
+        self.finish("Sorry")
+
