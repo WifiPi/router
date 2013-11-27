@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Wifi Auth</title>
+
+    <!-- Included CSS Files (Compressed) -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+
+
+    <!-- IE Fix for HTML5 Tags -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <style>
+    </style>
+</head>
+<body>
+<div class="container">
+
+{% include "../template/include/header.html" %}
+
+    <div style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
+        <form method="POST">
+            输入你的电子邮件<br/><br/>
+            <input type="email" name="email" value="" />
+            <input type="submit" value="激活上网"/>
+        </form>
+    </div>
+
+</div>
+</body>
+
+<script type="text/javascript" src="/static/js/underscore-1.5.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
+<!--script type="text/coffeescript" src="/static/coffee/device.coffee"></script-->
+
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/javascript" src="//wifi/static/js/detect.js"></script>
+
+</html>

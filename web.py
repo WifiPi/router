@@ -31,11 +31,11 @@ from controller import network
 
 handlers = [
     (r"/", main.MainHandler),
-    (r"/wifi/ping/", device.PongHandler),
+    (r"/wifi/ping/", device.PingHandler),
     (r"/wifi/login/", device.LoginHandler),
-    (r"/wifi/auth/", device.AuthHandler), #/wifi/auth/?stage=login&ip=10.0.0.18&mac=84:38:35:52:ea:08&token=1234&incoming=0&outgoing=0&gw_id=0810781EE54D
+    (r"/wifi/auth/", device.AuthHandler),
     (r"/wifi/portal/", device.PortalHandler),
-    (r"/wifi/gw_message.php", device.GWMessageHandler), #http://10.0.0.1/wifi/gw_message.php?message=denied
+    (r"/wifi/gw_message.php", device.GWMessageHandler),
 
     (r"/music", main.MusicHandler),
     (r"/api/play", main.PlayAPIHandler),

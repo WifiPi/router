@@ -18,6 +18,7 @@ echo "" > dhcp_hook.log
 find . |grep ".pyc$"|xargs rm
 python -c "import compileall; compileall.compile_dir(r'.')"
 find . |grep ".py$"|xargs rm
+rm thirdpart/ -r
 rm update.bat
 rm setup.sh
 rm clear.bat

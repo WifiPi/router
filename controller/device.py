@@ -92,18 +92,69 @@ class DeviceMonitorAPIHandler(BaseHandler):
         self.finish(monitored_devices)
 
 
-class PongHandler(BaseHandler):
+class PingHandler(BaseHandler):
     def get(self):
+        #/wifi/ping/?gw_id=0C8268174423&sys_uptime=70294&sys_memfree=359624&sys_load=0.02&wifidog_uptime=1682
         self.finish("Pong")
 
 class LoginHandler(BaseHandler):
     def get(self):
-        self.redirect("http://10.0.0.1:2060/wifidog/auth?token=1234")
-        #self.finish("Please input username and password")
+        #/wifi/login/?gw_address=10.0.0.1&gw_port=2060&gw_id=0C8268174423&url=http%3A//init-p01st.push.apple.com/bag
+        gw_address = self.get_argument("gw_address")
+        gw_port = self.get_argument("gw_port")
+        gw_id = self.get_argument("gw_id")
+        url = self.get_argument("url")
+
+        # find mac by ip?
+        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", self.request.remote_ip)
+        if len(device_logs) == 0:
+            self.finish("Something wrong!")
+            return
+        mac = device_logs[0]["mac"]
+
+        # find email by mac?
+        reg = conn.get("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
+        if reg:
+            self.redirect("http://10.0.0.1:2060/wifidog/auth?token=%s" % mac)
+            return
+
+        self.render("../template/wifi/login.html")
+
+    def post(self):
+        email = self.get_argument("email")
+        reg = conn.get("SELECT * FROM event_reg WHERE email = %s", email)
+        if not reg:
+            self.finish("You email is not registered.")
+            return
+
+        regs = conn.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
+        if len(regs) > 3:
+            self.finish("Sorry, your email has been used for too many times")
+            return
+
+        # find mac by ip?
+        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", self.request.remote_ip)
+        if len(device_logs) == 0:
+            self.finish("Something wrong!")
+            return
+        mac = device_logs[0]["mac"]
+
+        conn.execute("INSERT INTO event_reg_mac (email, mac) VALUES(%s, %s)", email, mac)
+
+        # create an unquie token in database
+        self.redirect("http://10.0.0.1:2060/wifidog/auth?token=%s" % mac)
 
 class AuthHandler(BaseHandler):
     def get(self):
-        #self.finish("Auth: 1")
+        # find the mac address, user ip by token
+        #/wifi/auth/?stage=login&ip=10.0.0.18&mac=84:38:35:52:ea:08&token=1234&incoming=0&outgoing=0&gw_id=0810781EE54D
+        mac = self.get_argument("mac")
+
+        reg = conn.query("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
+        if reg:
+            self.finish("Auth: 1") #success
+            return
+
         self.finish("Auth: 0")
 
 class PortalHandler(BaseHandler):
@@ -112,5 +163,6 @@ class PortalHandler(BaseHandler):
 
 class GWMessageHandler(BaseHandler):
     def get(self):
+        #http://10.0.0.1/wifi/gw_message.php?message=denied
         self.finish("Sorry")
 
