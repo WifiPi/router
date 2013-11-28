@@ -96,10 +96,6 @@ class LogoutHandler(BaseHandler):
         self.render("../template/logout.html")
 
 
-class MainHandler(BaseHandler):
-    def get(self):
-        self.render("../template/main.html")
-
 class MusicHandler(BaseHandler):
     def get(self):
         self.render("../template/music.html")
@@ -107,8 +103,6 @@ class MusicHandler(BaseHandler):
 class MessageHandler(BaseHandler):
     def get(self):
         self.render("../template/message.html")
-
-
 
 
 class PlayAPIHandler(BaseHandler):
@@ -122,6 +116,9 @@ class StopAPIHandler(BaseHandler):
         self.finish({})
 
 
+class FileHandler(BaseHandler):
+    def get(self):
+        self.render("../template/file.html")
 
 class Html5UploadFileSliceAPIHandler(BaseHandler):
     def post(self):

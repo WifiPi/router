@@ -137,6 +137,7 @@ def load():
             result["secure"] = "wpa2"
         else:
             result["secure"] = "none"
+            result["ssid_password"] = ""
 
     with open(root_path + "etc/dnsmasq.conf", "r") as f:
         for i in f.readlines():
@@ -217,7 +218,11 @@ class NetworkWifiAPIHandler(BaseHandler):
         settings['ssid'] = self.get_argument("ssid")
 
         if secure == "wpa2":
-            settings["ssid_password"] = self.get_argument("ssid_password")
+            ssid_password = self.get_argument("ssid_password", "")
+            if len(ssid_password) < 8:
+                self.finish({"error": "password length must longer than 8 characters."})
+                return
+            settings["ssid_password"] = ssid_password
 
         save(settings)
         self.finish({})

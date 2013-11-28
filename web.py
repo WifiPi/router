@@ -22,15 +22,19 @@ import tornado.locale
 from setting import settings
 #from setting import conn
 
-from controller import main
 from controller import base
+from controller import main
 #from controller import api
 #from controller import auth
 from controller import device
 from controller import network
+from controller import event
 
 handlers = [
-    (r"/", main.MainHandler),
+    (r"/", event.EventHandler),
+    (r"/event", event.EventHandler),
+    (r"/admin/event", event.EventAdminHandler),
+
     (r"/wifi/ping/", device.PingHandler),
     (r"/wifi/login/", device.LoginHandler),
     (r"/wifi/auth/", device.AuthHandler),
@@ -47,6 +51,7 @@ handlers = [
     (r"/api/music/turnoff", main.StopAPIHandler),
     (r"/api/music/shuffle", main.StopAPIHandler),
 
+    (r"/file", main.FileHandler),
     (r"/api/file/upload_html5_slice", main.Html5UploadFileSliceAPIHandler),
     (r"/api/file/list", main.FileListAPIHandler),
 

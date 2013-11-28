@@ -95,6 +95,11 @@ class DeviceMonitorAPIHandler(BaseHandler):
 class PingHandler(BaseHandler):
     def get(self):
         #/wifi/ping/?gw_id=0C8268174423&sys_uptime=70294&sys_memfree=359624&sys_load=0.02&wifidog_uptime=1682
+        self.get_argument("gw_id")
+        self.get_argument("sys_uptime")
+        self.get_argument("sys_memfree")
+        self.get_argument("sys_load")
+        self.get_argument("wifidog_uptime")
         self.finish("Pong")
 
 class LoginHandler(BaseHandler):
@@ -128,7 +133,7 @@ class LoginHandler(BaseHandler):
             return
 
         regs = conn.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
-        if len(regs) > 3:
+        if len(regs) >= 1:
             self.finish("Sorry, your email has been used for too many times")
             return
 
@@ -159,7 +164,8 @@ class AuthHandler(BaseHandler):
 
 class PortalHandler(BaseHandler):
     def get(self):
-        self.finish("Welcome")
+        self.redirect("/")
+        #self.finish("Welcome")
 
 class GWMessageHandler(BaseHandler):
     def get(self):

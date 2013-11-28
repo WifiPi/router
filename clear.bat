@@ -22,6 +22,7 @@ rm thirdpart/ -r
 rm update.bat
 rm setup.sh
 rm clear.bat
+chown -R pi:pi *
 
 #cd /var/www/router/static/temp/
 #rm *

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Event</title>
+
+    <!-- Included CSS Files (Compressed) -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+
+
+    <!-- IE Fix for HTML5 Tags -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <style>
+    </style>
+</head>
+<body>
+
+{#% include "../template/include/header.html" %#}
+
+<div class="container">
+
+    <!--div class="row" id="wifipi_wifi" class="hide" style="border: 1px solid orange; background-color: red; padding: 10px; margin: 10px 0 10px 0;">
+        You're using WifiPi
+    </div-->
+
+    <div class="row" style="padding: 10px; margin: 0 0 10px 0;">
+        <!--div class="icon-backward"></div>
+        <div class="icon-forward"></div>
+        <div class="icon-pause"></div-->
+        <div class="span2 hide">
+            <div class="music-play" style="background-image:url(/static/img/play_stop.gif);  background-position: -180px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
+            <div class="music-stop" style="background-image:url(/static/img/play_stop.gif);  background-position: -336px -222px; background-repeat: no-repeat; width:128px; height: 128px;"></div>
+        </div>
+        <div class="span3 hidden-phone" id="upload">
+            Drag files to Upload
+        </div>
+        <div class="span7 offset4" id="picker">
+        </div>
+        <div class="span9 hide">
+            The Music you're listening: <br /><br />
+            <b>Nine Million Bicycles - Katie Melua</b><br />
+            <div class="icon-heart"></div>Like the song on Facebook at <b>ABC Resturent</b> <br />
+        </div>
+        <br />
+    </div>
+
+    <!--div class="row" style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 10px 0 10px 0;">
+        We have menu: <br />
+
+        <b>Main Course</b><br />
+        <b>Drink</b><br />
+    </div>
+
+    <div class="row" style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
+        Shops around: <br />
+
+        <b>Wallmart Mall</b><br />
+        <b>7-ELEVEN</b><br />
+    </div>
+
+    <div class="row" style="border: 1px solid orange; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+        Tell your friends: <br />
+
+        <b>How to drive here?</b> <input type="email" /> <input type="submit" /> <br />
+    </div-->
+</div>
+</body>
+
+<script type="text/javascript" src="/static/js/underscore-1.5.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/static/js/coffee-script-1.6.3.min.js"></script>
+<script type="text/coffeescript" src="/static/coffee/upload.coffee"></script>
+<script type="text/coffeescript" src="/static/coffee/browser.coffee"></script>
+
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/javascript" src="//wifi/static/js/detect.js"></script>
+
+<script type="text/template" id="folder-template">
+<div class="folder row-fluid" path="<%= path %>">
+    <div class="icon-folder-open"></div>
+    <%= display %>
+</div>
+</script>
+
+<script type="text/template" id="parent-folder-template">
+<div class="folder row-fluid" path="<%= path %>">
+    <div class="icon-arrow-up"></div>
+    Parent
+</div>
+</script>
+
+<script type="text/template" id="file-template">
+<div class="file row-fluid">
+    <div class="icon-file"></div>
+    <a href="<%= path %>" target="_blank"><%= display %></a>
+</div>
+</script>
+
+
+</html>
