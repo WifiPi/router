@@ -133,7 +133,7 @@ class LoginHandler(BaseHandler):
             return
 
         regs = conn.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
-        if len(regs) >= 1:
+        if len(regs) >= 2:
             self.finish("Sorry, your email has been used for too many times")
             return
 
