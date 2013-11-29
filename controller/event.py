@@ -36,12 +36,46 @@ import music
 
 loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
 
+slides = {}
 
 class EventHandler(BaseHandler):
     def get(self):
         self.render("../template/event/event.html")
 
+
 class EventAdminHandler(BaseHandler):
     def get(self):
         self.render("../template/event/admin.html")
 
+class EventAdminPreviewHandler(BaseHandler):
+    def get(self):
+        title = self.get_argument("title", "")
+        self.finish(slides.get(title, ""))
+
+    def post(self):
+        title = self.get_argument("title", "")
+        content = self.get_argument("content", "")
+        slides[title] = content
+        self.finish({})
+
+
+class EventPushHandler(BaseHandler):
+    listeners = set()
+    @tornado.web.asynchronous
+    def get(self):
+        if self not in self.listeners:
+            self.listeners.add(self)
+
+    def on_slide_change(self, data):
+        self.finish(data)
+
+    def on_connection_close(self):
+        self.listeners.remove(self)
+
+    def post(self):
+        data = {"title":""}
+        print self.listeners
+        for i in self.listeners:
+            i.on_slide_change(data)
+
+        EventPushHandler.listeners = set()

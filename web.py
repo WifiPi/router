@@ -34,6 +34,11 @@ handlers = [
     (r"/", event.EventHandler),
     (r"/event", event.EventHandler),
     (r"/admin/event", event.EventAdminHandler),
+    (r"/api/event/slide/preview", event.EventAdminPreviewHandler),
+    (r"/api/event/slide/push", event.EventPushHandler),
+    (r"/api/event/slide/save", event.EventAdminHandler),
+    (r"/api/event/slide/load", event.EventAdminHandler),
+    (r"/api/event/slide/delete", event.EventAdminHandler),
 
     (r"/wifi/ping/", device.PingHandler),
     (r"/wifi/login/", device.LoginHandler),
