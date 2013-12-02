@@ -36,26 +36,31 @@ loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../tem
 root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
 root_path = '/'
 
-with open(root_path + "etc/network/interfaces", "r") as f:
-    for i in f.readlines():
-        if i.startswith("address "):
-            line = i.strip()
-            router_ip = line[len("address "):]
 
-        #elif i.startswith("netmask "):
-        #    line = i.strip()
-        #    router_mask = line[len("netmask "):]
+def get_ip_range():
+    with open(root_path + "etc/network/interfaces", "r") as f:
+        for i in f.readlines():
+            if i.startswith("address "):
+                line = i.strip()
+                router_ip = line[len("address "):]
 
-    ip_segments = router_ip.split(".")
-    if ip_segments[0] == "192":
-        ip_range = "192.168.%s." % ip_segments[2]
-    elif ip_segments[0] == "10":
-        ip_range = "10.%s." % ip_segments[1]
+            #elif i.startswith("netmask "):
+            #    line = i.strip()
+            #    router_mask = line[len("netmask "):]
 
+        ip_segments = router_ip.split(".")
+        if ip_segments[0] == "192":
+            ip_range = "192.168.%s." % ip_segments[2]
+        elif ip_segments[0] == "10":
+            ip_range = "10.%s." % ip_segments[1]
+        else:
+            ip_range = None
+        return ip_range
 
 devices = {}
 monitored_devices = {}
 def get_devices():
+    ip_range = get_ip_range()
     for result in conn.query("SELECT * FROM device_log"):
         if result['ipv4'].startswith(ip_range):
             devices[result['ipv4']] = result['name'], result['mac']
@@ -111,7 +116,8 @@ class LoginHandler(BaseHandler):
         url = self.get_argument("url")
 
         # find mac by ip?
-        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", self.request.remote_ip)
+        remote_ip = self.request.remote_ip if self.request.remote_ip != '127.0.0.1' else self.request.headers['X-Forwarded-For']
+        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", remote_ip)
         if len(device_logs) == 0:
             self.finish("Something wrong!")
             return
@@ -127,10 +133,12 @@ class LoginHandler(BaseHandler):
 
     def post(self):
         email = self.get_argument("email")
+        """
         reg = conn.get("SELECT * FROM event_reg WHERE email = %s", email)
         if not reg:
             self.finish("You email is not registered.")
             return
+        """
 
         regs = conn.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
         if len(regs) >= 2:
@@ -138,7 +146,8 @@ class LoginHandler(BaseHandler):
             return
 
         # find mac by ip?
-        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", self.request.remote_ip)
+        remote_ip = self.request.remote_ip if self.request.remote_ip != '127.0.0.1' else self.request.headers['X-Forwarded-For']
+        device_logs = conn.query("SELECT * FROM device_log WHERE ipv4 = %s ORDER BY id DESC", remote_ip)
         if len(device_logs) == 0:
             self.finish("Something wrong!")
             return

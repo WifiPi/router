@@ -21,10 +21,8 @@ $ ->
             $("#slide-list").empty()
             $("#slide-list").append("<option value=''>New Title</option>")
             for i in data["list"]
-                df = ""
-                if i == current_title
-                    df = "selected"
-                    #alert current_title
+                df = if i == current_title then "selected" else ""
+                #alert current_title
                 $("#slide-list").append(option_template({"title":i, "df": df}))
     reload_list()
 

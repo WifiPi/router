@@ -57,15 +57,15 @@ case "$1" in
     echo "Starting Wifidog ... "
     if $WD_DIR/wdctl status 2> /dev/null
     then
-	echo "FAILED:  Wifidog already running"
+    echo "FAILED:  Wifidog already running"
     else
         $0 test-module
-	if $WD_DIR/wifidog $OPTIONS
-	then
-		echo "OK"
-	else
-		echo "FAILED:  Wifidog exited with non 0 status"
-	fi
+    if $WD_DIR/wifidog $OPTIONS
+    then
+        echo "OK"
+    else
+        echo "FAILED:  Wifidog exited with non 0 status"
+    fi
     fi
     ;;
   restart)
@@ -82,12 +82,12 @@ case "$1" in
     echo "Stopping Wifidog ... "
     if $WD_DIR/wdctl status 2> /dev/null
     then
-       	if $WD_DIR/wdctl stop
-	then
-		echo "OK"
-	else
-		echo "FAILED:  wdctl stop exited with non 0 status"
-	fi
+        if $WD_DIR/wdctl stop
+    then
+        echo "OK"
+    else
+        echo "FAILED:  wdctl stop exited with non 0 status"
+    fi
        
     else
        echo "FAILED:  Wifidog was not running"

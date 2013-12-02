@@ -35,6 +35,7 @@ apt-get install -y pppoe
 apt-get install -y mpg123
 apt-get install -y supervisor
 
+apt-get install -y nginx
 apt-get install -y mysql-server
 apt-get install -y python-mysqldb
 
@@ -59,6 +60,10 @@ chmod +x /etc/network/if-pre-up.d/iptables
 
 cp /var/www/router/etc/supervisor/conf.d/router.conf /etc/supervisor/conf.d/
 supervisorctl reload
+
+cp /var/www/router/etc/nginx/sites-enabled/router /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+/etc/init.d/nginx reload
 
 cp /var/www/router/etc/sysctl.conf /etc/
 echo "1" > /proc/sys/net/ipv4/ip_forward
