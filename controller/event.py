@@ -1,5 +1,6 @@
 import sys
 import os
+import os.path
 import logging
 import cgi
 import json
@@ -34,7 +35,6 @@ from setting import conn_remote
 #import nomagic.feeds
 
 from controller.base import *
-import music
 
 loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
 
@@ -56,12 +56,6 @@ class EventAdminHandler(BaseHandler):
 
         self.render("../template/event/admin.html")
 
-        cookie = self.request.headers["Cookie"]
-        http = tornado.httpclient.AsyncHTTPClient()
-        http.fetch("http://127.0.0.1:8017/api/event/slide/push", self._on_fetch, method="POST", headers={"Cookie":cookie}, body="")
-
-    def _on_fetch(self, response):
-        print response.body
 
 class EventAdminPreviewHandler(BaseHandler):
     def get(self):
@@ -114,6 +108,19 @@ class EventPushAPIHandler(BaseHandler):
 
         EventPushAPIHandler.listeners = set()
         self.finish({})
+
+        clients_json_filename = os.path.join(os.path.dirname(__file__), "../clients.json")
+        if not os.path.exists(clients_json_filename):
+            return
+        cookie = self.request.headers["Cookie"]
+        with open(clients_json_filename, "r") as f:
+            for ip in json.loads(f.read())["clients"]:
+                http = tornado.httpclient.AsyncHTTPClient()
+                http.fetch("http://%s/api/event/slide/push" % ip, self._on_fetch, method="POST", headers={"Cookie":cookie}, body="title=%s" % urllib.quote(title))
+
+    def _on_fetch(self, response):
+        print response.body
+        pass
 
 
 class EventListAPIHandler(BaseHandler):

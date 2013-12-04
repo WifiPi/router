@@ -6,6 +6,7 @@ $ ->
 
     waiting = (data) ->
         #console.log data
-        $("body").load "/admin/event/slide/preview?title="+encodeURI(data["title"])
+        $.get "/api/event/slide/load?title="+encodeURI(data["title"]), (data) ->
+	        $("body").html data["content"]
 
     live()

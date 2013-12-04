@@ -29,7 +29,6 @@ from setting import conn
 #import nomagic.feeds
 
 from controller.base import *
-import music
 
 loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
 
@@ -189,7 +188,7 @@ def load():
 
 class NetworkHandler(BaseHandler):
     def get(self):
-        if self.current_user and time.time() - self.current_user["time"] > 300:
+        if self.current_user or time.time() - self.current_user["time"] > 300:
             self.redirect("/login")
             return
 
@@ -198,7 +197,7 @@ class NetworkHandler(BaseHandler):
 
 class NetworkChangeAPIHandler(BaseHandler):
     def get(self):
-        if self.current_user and time.time() - self.current_user["time"] > 300:
+        if self.current_user or time.time() - self.current_user["time"] > 300:
             self.redirect("/login")
             return
 
@@ -221,7 +220,7 @@ class NetworkChangeAPIHandler(BaseHandler):
 
 class NetworkWifiAPIHandler(BaseHandler):
     def post(self):
-        if self.current_user and time.time() - self.current_user["time"] > 300:
+        if self.current_user or time.time() - self.current_user["time"] > 300:
             self.redirect("/login")
             return
 
@@ -245,7 +244,7 @@ class NetworkWifiAPIHandler(BaseHandler):
 
 class NetworkWanAPIHandler(BaseHandler):
     def post(self):
-        if self.current_user and time.time() - self.current_user["time"] > 300:
+        if self.current_user or time.time() - self.current_user["time"] > 300:
             self.redirect("/login")
             return
 
@@ -265,7 +264,7 @@ class NetworkWanAPIHandler(BaseHandler):
 
 class NetworkLanAPIHandler(BaseHandler):
     def post(self):
-        if self.current_user and time.time() - self.current_user["time"] > 300:
+        if self.current_user or time.time() - self.current_user["time"] > 300:
             self.redirect("/login")
             return
 

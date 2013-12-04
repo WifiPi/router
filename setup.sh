@@ -59,6 +59,7 @@ cp /var/www/router/etc/iptables.up.rules /etc/
 chmod +x /etc/network/if-pre-up.d/iptables
 
 cp /var/www/router/etc/supervisor/conf.d/router.conf /etc/supervisor/conf.d/
+cp /var/www/router/etc/supervisor/conf.d/beacon.conf /etc/supervisor/conf.d/
 supervisorctl reload
 
 cp /var/www/router/etc/nginx/sites-enabled/router /etc/nginx/sites-enabled/

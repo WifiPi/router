@@ -29,7 +29,6 @@ from setting import conn_remote
 #import nomagic.feeds
 
 from controller.base import *
-import music
 
 loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
 

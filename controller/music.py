@@ -24,6 +24,7 @@ s = None # schedule of turn off the speaker power
 w = None # watch if the process ends, and play the next song
 
 def play(filename):
+    #print filename
     global p
     stop()
     p = subprocess.Popen(["mpg123", filename]) #mpg123
@@ -80,8 +81,8 @@ def watch():
 
 
 def random_song():
-    mp3s = [i for i in os.listdir(".") if i.endswith(".mp3")]
-    play(random.choice(mp3s))
+    mp3s = [i for i in os.listdir(os.path.dirname(os.path.abspath(__file__)) + "/../mp3/") if i.endswith(".mp3")]
+    play(os.path.dirname(os.path.abspath(__file__)) + "/../mp3/"+random.choice(mp3s))
 
 
 if __name__ == '__main__':
