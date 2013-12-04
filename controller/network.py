@@ -6,6 +6,7 @@ import json
 import random
 import string
 import urllib
+import time
 
 import tornado.options
 import tornado.ioloop
@@ -188,11 +189,19 @@ def load():
 
 class NetworkHandler(BaseHandler):
     def get(self):
+        if self.current_user and time.time() - self.current_user["time"] > 300:
+            self.redirect("/login")
+            return
+
         settings = load()
         self.render("../template/network.html", **settings)
 
 class NetworkChangeAPIHandler(BaseHandler):
     def get(self):
+        if self.current_user and time.time() - self.current_user["time"] > 300:
+            self.redirect("/login")
+            return
+
         save({
             'ssid': 'LongPlay',
             'ssid_password': 'raspberry',
@@ -212,6 +221,10 @@ class NetworkChangeAPIHandler(BaseHandler):
 
 class NetworkWifiAPIHandler(BaseHandler):
     def post(self):
+        if self.current_user and time.time() - self.current_user["time"] > 300:
+            self.redirect("/login")
+            return
+
         settings = load()
         secure = self.get_argument("secure")
         settings['secure'] = secure
@@ -232,6 +245,10 @@ class NetworkWifiAPIHandler(BaseHandler):
 
 class NetworkWanAPIHandler(BaseHandler):
     def post(self):
+        if self.current_user and time.time() - self.current_user["time"] > 300:
+            self.redirect("/login")
+            return
+
         settings = load()
 
         wan = self.get_argument("wan")
@@ -248,6 +265,10 @@ class NetworkWanAPIHandler(BaseHandler):
 
 class NetworkLanAPIHandler(BaseHandler):
     def post(self):
+        if self.current_user and time.time() - self.current_user["time"] > 300:
+            self.redirect("/login")
+            return
+
         settings = load()
         router_ip = self.get_argument("router_ip")
         settings['router_ip'] = router_ip

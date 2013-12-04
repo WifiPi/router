@@ -89,14 +89,7 @@
 <script type="text/coffeescript" src="/static/coffee/browser.coffee"></script>
 
 <script type="text/javascript" src="/static/js/main.js"></script>
-<script type="text/javascript" src="//wifi/static/js/detect.js"></script>
-
-<script type="text/template" id="folder-template">
-<div class="folder row-fluid" path="<%= path %>">
-    <div class="icon-folder-open"></div>
-    <%= display %>
-</div>
-</script>
+<!--script type="text/javascript" src="//wifi/static/js/detect.js"></script-->
 
 <script type="text/template" id="parent-folder-template">
 <div class="folder row-fluid" path="<%= path %>">
@@ -105,10 +98,17 @@
 </div>
 </script>
 
+<script type="text/template" id="folder-template">
+<div class="folder row-fluid" path="<%= path %>">
+    <div class="icon-folder-open"></div>
+    <a href="/file?p=<%= path %>"><%= display %></a>
+</div>
+</script>
+
 <script type="text/template" id="file-template">
 <div class="file row-fluid">
     <div class="icon-file"></div>
-    <a href="<%= path %>" target="_blank"><%= display %></a>
+    <a href="/download/<%= path %>" target="_blank"><%= display %></a>
 </div>
 </script>
 

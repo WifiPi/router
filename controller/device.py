@@ -22,6 +22,7 @@ from tornado_ses import EmailHandler
 
 from setting import settings
 from setting import conn
+from setting import conn_remote
 
 #import nomagic
 #import nomagic.auth
@@ -66,7 +67,6 @@ def get_devices():
             devices[result['ipv4']] = result['name'], result['mac']
     for result in conn.query("SELECT * FROM device_monitor"):
         monitored_devices[result['ipv4']] = result['name']
-get_devices()
 
 class DeviceHandler(BaseHandler):
     def get(self):
@@ -94,6 +94,7 @@ class DeviceMonitorAPIHandler(BaseHandler):
     return devices' ip which need to monitor by ping
     """
     def get(self):
+        get_devices()
         self.finish(monitored_devices)
 
 
@@ -110,10 +111,10 @@ class PingHandler(BaseHandler):
 class LoginHandler(BaseHandler):
     def get(self):
         #/wifi/login/?gw_address=10.0.0.1&gw_port=2060&gw_id=0C8268174423&url=http%3A//init-p01st.push.apple.com/bag
-        gw_address = self.get_argument("gw_address")
-        gw_port = self.get_argument("gw_port")
-        gw_id = self.get_argument("gw_id")
-        url = self.get_argument("url")
+        #gw_address = self.get_argument("gw_address")
+        #gw_port = self.get_argument("gw_port")
+        #gw_id = self.get_argument("gw_id")
+        #url = self.get_argument("url")
 
         # find mac by ip?
         remote_ip = self.request.remote_ip if self.request.remote_ip != '127.0.0.1' else self.request.headers['X-Forwarded-For']
@@ -124,7 +125,7 @@ class LoginHandler(BaseHandler):
         mac = device_logs[0]["mac"]
 
         # find email by mac?
-        reg = conn.get("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
+        reg = conn_remote.get("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
         if reg:
             self.redirect("http://10.0.0.1:2060/wifidog/auth?token=%s" % mac)
             return
@@ -134,13 +135,13 @@ class LoginHandler(BaseHandler):
     def post(self):
         email = self.get_argument("email")
         """
-        reg = conn.get("SELECT * FROM event_reg WHERE email = %s", email)
+        reg = conn_remote.get("SELECT * FROM event_reg WHERE email = %s", email)
         if not reg:
             self.finish("You email is not registered.")
             return
         """
 
-        regs = conn.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
+        regs = conn_remote.query("SELECT * FROM event_reg_mac WHERE email = %s", email)
         if len(regs) >= 2:
             self.finish("Sorry, your email has been used for too many times")
             return
@@ -153,7 +154,7 @@ class LoginHandler(BaseHandler):
             return
         mac = device_logs[0]["mac"]
 
-        conn.execute("INSERT INTO event_reg_mac (email, mac) VALUES(%s, %s)", email, mac)
+        conn_remote.execute("INSERT INTO event_reg_mac (email, mac) VALUES(%s, %s)", email, mac)
 
         # create an unquie token in database
         self.redirect("http://10.0.0.1:2060/wifidog/auth?token=%s" % mac)
@@ -164,7 +165,7 @@ class AuthHandler(BaseHandler):
         #/wifi/auth/?stage=login&ip=10.0.0.18&mac=84:38:35:52:ea:08&token=1234&incoming=0&outgoing=0&gw_id=0810781EE54D
         mac = self.get_argument("mac")
 
-        reg = conn.query("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
+        reg = conn_remote.query("SELECT * FROM event_reg_mac WHERE mac = %s", mac)
         if reg:
             self.finish("Auth: 1") #success
             return

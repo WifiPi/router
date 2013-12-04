@@ -5,16 +5,15 @@ import os
 import urllib
 import urllib2
 import datetime
-#import cgi
 
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-#sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/vendor')
+#sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../vendor')
 
 #os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 if __name__ == "__main__":
-    with open("/var/www/router/dhcp_hook.log", "a+") as f:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/../dhcp_hook.log", "a+") as f:
         print >> f, datetime.datetime.now().isoformat(), sys.argv[1:]
 
     #urllib2.urlopen("http://127.0.0.1/api/play")

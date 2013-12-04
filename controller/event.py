@@ -19,6 +19,7 @@ import tornado.template
 import tornado.database
 import tornado.auth
 import tornado.locale
+import tornado.httpclient
 
 #import markdown2
 from tornado_ses import EmailHandler
@@ -26,6 +27,7 @@ from tornado_ses import EmailHandler
 
 from setting import settings
 from setting import conn
+from setting import conn_remote
 
 #import nomagic
 #import nomagic.auth
@@ -48,7 +50,18 @@ class EventHandler(BaseHandler):
 
 class EventAdminHandler(BaseHandler):
     def get(self):
+        if not self.current_user:
+            self.redirect("/login")
+            return
+
         self.render("../template/event/admin.html")
+
+        cookie = self.request.headers["Cookie"]
+        http = tornado.httpclient.AsyncHTTPClient()
+        http.fetch("http://127.0.0.1:8017/api/event/slide/push", self._on_fetch, method="POST", headers={"Cookie":cookie}, body="")
+
+    def _on_fetch(self, response):
+        print response.body
 
 class EventAdminPreviewHandler(BaseHandler):
     def get(self):
@@ -57,6 +70,9 @@ class EventAdminPreviewHandler(BaseHandler):
         self.finish(slides.get(editing_title, ""))
 
     def post(self):
+        if not self.current_user:
+            return
+
         global editing_title
         title = self.get_argument("title", "")
         editing_title = title
@@ -81,6 +97,9 @@ class EventPushAPIHandler(BaseHandler):
         self.listeners.remove(self)
 
     def post(self):
+        if not self.current_user:
+            return
+
         global current_title
         title = self.get_argument("title", "")
         if title:
@@ -94,31 +113,32 @@ class EventPushAPIHandler(BaseHandler):
             i.on_slide_change(data)
 
         EventPushAPIHandler.listeners = set()
+        self.finish({})
 
 
 class EventListAPIHandler(BaseHandler):
     def get(self):
-        slides = conn.query("SELECT * FROM event_slide")
+        slides = conn_remote.query("SELECT * FROM event_slide")
         self.finish({"list": [i.title for i in slides]})
 
 class EventLoadAPIHandler(BaseHandler):
     def get(self):
         title = self.get_argument("title", "")
-        slide = conn.get("SELECT * FROM event_slide WHERE title = %s", title)
+        slide = conn_remote.get("SELECT * FROM event_slide WHERE title = %s", title)
         self.finish({"title": slide.title, "content": slide.content})
 
 class EventSaveAPIHandler(BaseHandler):
     def post(self):
         title = self.get_argument("title", "")
         content = self.get_argument("content", "")
-        if conn.get("SELECT * FROM event_slide WHERE title = %s", title):
-            conn.execute("UPDATE event_slide SET content = %s WHERE title = %s", content, title)
+        if conn_remote.get("SELECT * FROM event_slide WHERE title = %s", title):
+            conn_remote.execute("UPDATE event_slide SET content = %s WHERE title = %s", content, title)
         else:
-            conn.execute("INSERT INTO event_slide (title, content) VALUES (%s, %s)", title, content)
+            conn_remote.execute("INSERT INTO event_slide (title, content) VALUES (%s, %s)", title, content)
         self.finish({})
 
 class EventDeleteAPIHandler(BaseHandler):
     def post(self):
         title = self.get_argument("title", "")
-        conn.execute("DELETE FROM event_slide WHERE title = %s", title)
+        conn_remote.execute("DELETE FROM event_slide WHERE title = %s", title)
         self.finish({})

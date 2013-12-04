@@ -16,5 +16,9 @@ settings = {
 }
 
 conn = tornado.database.Connection("127.0.0.1", "test", "root", "root")
+try:
+    from setting_remote import conn_remote
+except:
+    conn_remote = conn
 
 ring = [conn]

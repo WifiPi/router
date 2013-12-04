@@ -74,13 +74,16 @@ handlers = [
     (r"/api/device/add", device.DeviceAddAPIHandler),
     (r"/api/device/monitor", device.DeviceMonitorAPIHandler),
 
+    (r"/login", main.LoginHandler),
+    (r"/logout", main.LogoutHandler),
+
     (r"/static/(.*)", tornado.web.StaticFileHandler, dict(path=settings['static_path'], default_filename='index.html')),
+
+    (r"/library/test/success.html", device.LoginHandler),
 ]
 
 '''
     (r"/setting", main.SettingHandler),
-    (r"/login", main.LoginHandler),
-    (r"/logout", main.LogoutHandler),
 
     (r"/api/profile_img", api.ProfileImgAPIHandler),
 

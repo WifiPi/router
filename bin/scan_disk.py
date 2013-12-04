@@ -59,4 +59,32 @@ def scan_port(board_io_port):
         time.sleep(2)
 
 if __name__ == "__main__":
-    scan_port(11)
+    #scan_port(11)
+    pass
+
+"""
+GPIO.output(11, False)
+GPIO.output(12, False)
+GPIO.output(15, False)
+GPIO.output(16, False)
+
+GPIO.output(11, True)
+time.sleep(2)
+GPIO.output(11, False)
+time.sleep(1)
+
+GPIO.output(12, True)
+time.sleep(2)
+GPIO.output(12, False)
+time.sleep(1)
+
+GPIO.output(15, True)
+time.sleep(2)
+GPIO.output(15, False)
+time.sleep(1)
+
+GPIO.output(16, True)
+time.sleep(2)
+GPIO.output(16, False)
+time.sleep(1)
+"""

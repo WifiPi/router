@@ -25,7 +25,8 @@ from tornado_ses import EmailHandler
 #from amazon_ses import EmailMessage
 
 from setting import settings
-#from setting import conn
+from setting import conn
+from setting import conn_remote
 
 #import nomagic
 #import nomagic.auth
@@ -40,52 +41,18 @@ loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../tem
 class LoginHandler(BaseHandler, EmailHandler):
     def get(self):
         self.email = self.get_argument("email", u"")
-        self.invite_code = self.get_argument("invite_code", u"")
         self.render('../template/login.html')
 
     def post(self):
-        login = self.get_argument("login", None)
-        password = self.get_argument("password", None)
+        login = self.get_argument("login")
+        password = self.get_argument("password")
 
-        invite_code = self.get_argument("invite_code", None)
-        email = self.get_argument("email", None)
-        name = self.get_argument("name", None)
-        password1 = self.get_argument("password1", None)
-        password2 = self.get_argument("password2", None)
-
-        if login and password:
-            user_id, user = nomagic.auth.check_user(login, password)
-            if user_id:
-                self.set_secure_cookie("user", tornado.escape.json_encode({"user_id": user_id}))
-                self.redirect("/?status=login")
-                return
-
-        elif email and name and password1 and password2 and password1 == password2 and invite_code:
-            invited = conn.get("SELECT * FROM invite WHERE code = %s", invite_code)
-            if not invited:
-                self.redirect("/login?status=need_invite_code")
-                return
-
-            data = {"email": email, "name": name, "password": password1}
-            try:
-                user_id, user = nomagic.auth.create_user(data)
-
-                self.set_secure_cookie("user", tornado.escape.json_encode({"user_id": user_id}))
-
-                email_verify_code = ''.join(random.choice(string.digits+string.letters) for x in range(14))
-                result = nomagic.auth.update_user(user_id, {"email_verified": False, "email_verify_code": email_verify_code})
-
-                #send verify email here
-                msg = EmailMessage()
-                msg.subject = "Confirm Email from Pythonic Info"
-                msg.bodyText = "http://pythonic.info/verify_email?user_id=%s&verify_code=%s" % (user_id, email_verify_code)
-                self.send("info@pythonic.info", str(email), msg)
-                print "url:", msg.bodyText
-
-                self.redirect("/?status=created")
-                return
-            except:
-                pass
+        user = conn_remote.get("SELECT * FROM users WHERE login = %s", login)
+        if user and user["password"] == hashlib.sha1(password).hexdigest():
+            user_id = user["id"]
+            self.set_secure_cookie("user", tornado.escape.json_encode({"user_id": user_id, "time": time.time()}))
+            self.redirect("/?status=login")
+            return
 
         self.redirect("/login?status=error")
 
@@ -166,7 +133,9 @@ class Html5UploadFileSliceAPIHandler(BaseHandler):
 
 class FileListAPIHandler(BaseHandler):
     def get(self):
+        for root, folders, files in os.walk('./static/download/'):
+            break
         self.finish({
-            "folders":["123","345","234"],
-            "files":["abc", "def def def def def def def def def def def def def def def def def def def def def def def def def def def ", "xyz"]*10
+            "folders": folders,
+            "files": files
         })
