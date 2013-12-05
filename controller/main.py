@@ -1,5 +1,6 @@
 import sys
 import os
+import os.path
 import logging
 import cgi
 import json
@@ -85,6 +86,7 @@ class StopAPIHandler(BaseHandler):
 
 class FileHandler(BaseHandler):
     def get(self):
+        self.folder = self.get_argument("folder", "").rstrip("/")
         self.render("../template/file.html")
 
 class Html5UploadFileSliceAPIHandler(BaseHandler):
@@ -133,9 +135,13 @@ class Html5UploadFileSliceAPIHandler(BaseHandler):
 
 class FileListAPIHandler(BaseHandler):
     def get(self):
-        for root, folders, files in os.walk('./static/download/'):
+        folder = self.get_argument("folder", "").rstrip("/")
+        parent = os.path.dirname(folder)
+        for root, folders, files in os.walk('./%s' % folder):
             break
         self.finish({
+            "folder": folder,
+            "parent": parent,
             "folders": folders,
             "files": files
         })

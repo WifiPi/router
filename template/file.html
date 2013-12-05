@@ -29,8 +29,7 @@
 </head>
 <body>
 
-{#% include "../template/include/header.html" %#}
-
+{% include "../template/include/header.html" %}
 <div class="container">
 
     <!--div class="row" id="wifipi_wifi" class="hide" style="border: 1px solid orange; background-color: red; padding: 10px; margin: 10px 0 10px 0;">
@@ -90,18 +89,21 @@
 
 <script type="text/javascript" src="/static/js/main.js"></script>
 <!--script type="text/javascript" src="//wifi/static/js/detect.js"></script-->
+<script type="text/javascript">
+var CURRENT_FOLDER = "{{handler.folder}}";
+</script>
 
 <script type="text/template" id="parent-folder-template">
 <div class="folder row-fluid" path="<%= path %>">
     <div class="icon-arrow-up"></div>
-    Parent
+    <a href="/file?folder=<%= path %>">Parent</a>
 </div>
 </script>
 
 <script type="text/template" id="folder-template">
 <div class="folder row-fluid" path="<%= path %>">
     <div class="icon-folder-open"></div>
-    <a href="/file?p=<%= path %>"><%= display %></a>
+    <a href="/file?folder=<%= path %>"><%= display %></a>
 </div>
 </script>
 
