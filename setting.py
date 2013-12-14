@@ -1,7 +1,7 @@
 import os
 
 import json
-import tornado.database
+import torndb
 
 
 settings = {
@@ -15,7 +15,7 @@ settings = {
     "debug": True,
 }
 
-conn = tornado.database.Connection("127.0.0.1", "test", "root", "root")
+conn = torndb.Connection("127.0.0.1", "test", "root", "root")
 try:
     from setting_remote import conn_remote
 except:

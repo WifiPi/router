@@ -15,7 +15,6 @@ import tornado.options
 import tornado.ioloop
 import tornado.web
 import tornado.template
-import tornado.database
 import tornado.auth
 import tornado.locale
 

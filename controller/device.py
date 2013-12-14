@@ -12,7 +12,6 @@ import tornado.ioloop
 import tornado.web
 
 import tornado.template
-import tornado.database
 import tornado.auth
 import tornado.locale
 
@@ -181,3 +180,6 @@ class GWMessageHandler(BaseHandler):
         #http://10.0.0.1/wifi/gw_message.php?message=denied
         self.finish("Sorry")
 
+class AppleTestHandler(BaseHandler):
+    def get(self):
+        self.finish("WifiPi Welcome")

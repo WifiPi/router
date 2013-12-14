@@ -10,6 +10,7 @@ import urllib
 import base64
 import hashlib
 import time
+import shutil
 from StringIO import StringIO
 
 import tornado.options
@@ -17,7 +18,6 @@ import tornado.ioloop
 import tornado.web
 
 import tornado.template
-import tornado.database
 import tornado.auth
 import tornado.locale
 
@@ -110,16 +110,16 @@ class Html5UploadFileSliceAPIHandler(BaseHandler):
         #dirname = self.get_argument("dirname")
         tempfile = self.get_argument("tempfile", None)
 
-        if tempfile is None:
+        if not tempfile:
             tempfile = ".%.7f" % time.time()
 
-        #print start, len(content)
         if start + len(content) <= size:
             with open(os.path.join(os.path.dirname(__file__), "../static/temp/%s" % tempfile), "ab") as f:
                 f.write(content)
 
         if size > 0 and start + len(content) == size:
             host = "%s://%s" % (self.request.protocol, self.request.host)
+            shutil.move(os.path.join(os.path.dirname(__file__), "../static/temp/%s" % tempfile), "/home/pi/file/%s" % self.filename)
             self.finish({"result": "success"})
             return
 
@@ -137,7 +137,7 @@ class FileListAPIHandler(BaseHandler):
     def get(self):
         folder = self.get_argument("folder", "").rstrip("/")
         parent = os.path.dirname(folder)
-        for root, folders, files in os.walk('./%s' % folder):
+        for root, folders, files in os.walk('/home/pi/file/%s' % folder):
             break
         self.finish({
             "folder": folder,

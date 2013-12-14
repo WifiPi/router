@@ -9,9 +9,15 @@
     line-height: 380px;
     text-align: center;
     position: fixed;
+    z-index: 100;
+}
+
+.on_drag#upload {
+    border: 3px dashed blue;
 }
 
 #picker{
     margin-top: 30px;
-    margin-bottom: 80px;
+    margin-bottom: 10px;
+    z-index: 10;
 }

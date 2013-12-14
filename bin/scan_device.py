@@ -8,7 +8,6 @@ import urllib2
 import json
 
 import tornado.ioloop
-#import tornado.database
 
 import ping
 
