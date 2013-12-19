@@ -5,7 +5,6 @@ $ ->
 
     file_lists = []
 
-    #music_template = _.template($('#music-template').html())
     parent_folder_template = _.template($('#parent-folder-template').html())
     folder_template = _.template($('#folder-template').html())
     file_template = _.template($('#file-template').html())
@@ -43,8 +42,8 @@ $ ->
 
     load_file = (path, rev, ele) ->
 
-    #$("#picker").on "click", ".folder", (e) ->
-    #    load_folder($(this).attr("path"), $(this))
+    $("#picker").on "click", ".folder", (e) ->
+        load_folder($(this).attr("path"), $(this))
 
     $("#picker").on "click", ".file", (e) ->
         console.log $(this)

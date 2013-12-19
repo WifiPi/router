@@ -7,6 +7,11 @@ import socket
 import urllib2
 import json
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../vendor')
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 import tornado.ioloop
 
 import ping

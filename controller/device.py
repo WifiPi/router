@@ -29,8 +29,6 @@ from setting import conn_remote
 
 from controller.base import *
 
-loader = tornado.template.Loader(os.path.join(os.path.dirname(__file__), "../template/"))
-
 
 root_path = os.path.dirname(os.path.abspath(__file__)) + '/../'
 root_path = '/'

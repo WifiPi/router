@@ -28,6 +28,7 @@ from controller import main
 from controller import device
 from controller import network
 from controller import event
+from controller import files
 
 handlers = [
     (r"/", event.EventHandler),
@@ -56,9 +57,9 @@ handlers = [
     (r"/api/music/turnoff", main.StopAPIHandler),
     (r"/api/music/shuffle", main.StopAPIHandler),
 
-    (r"/file", main.FileHandler),
-    (r"/api/file/upload_html5_slice", main.Html5UploadFileSliceAPIHandler),
-    (r"/api/file/list", main.FileListAPIHandler),
+    (r"/file", files.FileHandler),
+    (r"/api/file/upload_html5_slice", files.Html5UploadFileSliceAPIHandler),
+    (r"/api/file/list", files.FileListAPIHandler),
 
 
     (r"/network", network.NetworkHandler),
