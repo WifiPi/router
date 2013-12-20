@@ -1,7 +1,6 @@
 CREATE TABLE `event_reg_mac` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL DEFAULT '',
-  `mac` char(17) NOT NULL DEFAULT '',
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` INTEGER NOT NULL PRIMARY KEY,
+  `email` TEXT NOT NULL DEFAULT '',
+  `mac` TEXT NOT NULL DEFAULT '',
+  `datetime` DEFAULT CURRENT_TIMESTAMP
+);

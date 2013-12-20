@@ -1,8 +1,6 @@
 CREATE TABLE `event_slide` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `content` longtext NOT NULL,
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `title` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` INTEGER NOT NULL PRIMARY KEY,
+  `title` TEXT NOT NULL DEFAULT '',
+  `content` TEXT NOT NULL,
+  `datetime` DEFAULT CURRENT_TIMESTAMP
+);

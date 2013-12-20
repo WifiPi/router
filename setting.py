@@ -1,7 +1,7 @@
 import os
-
 import json
-import torndb
+
+import tornlite
 
 
 settings = {
@@ -15,7 +15,7 @@ settings = {
     "debug": True,
 }
 
-conn = torndb.Connection("127.0.0.1", "test", "root", "root")
+conn = tornlite.Connection(os.path.join(os.path.dirname(__file__), "test.db"))
 try:
     from setting_remote import conn_remote
 except:

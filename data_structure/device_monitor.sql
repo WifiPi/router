@@ -1,6 +1,5 @@
 CREATE TABLE `device_monitor` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ipv4` varchar(15) NOT NULL DEFAULT '',
-  `name` varchar(30) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` INTEGER NOT NULL PRIMARY KEY,
+  `ipv4` TEXT NOT NULL DEFAULT '',
+  `name` TEXT NOT NULL DEFAULT ''
+);

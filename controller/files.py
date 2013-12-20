@@ -11,15 +11,13 @@ import base64
 import hashlib
 import time
 import shutil
-from StringIO import StringIO
 
-import tornado.options
-import tornado.ioloop
+#import tornado.options
+#import tornado.ioloop
 import tornado.web
-
-import tornado.template
-import tornado.auth
-import tornado.locale
+#import tornado.template
+#import tornado.auth
+#import tornado.locale
 
 #import markdown2
 from tornado_ses import EmailHandler
@@ -36,6 +34,7 @@ from controller.base import *
 UPLOAD_FOLDER = "/home/pi/file"
 UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/../static/upload"
 
+logger = logging.getLogger(__name__)
 
 class FileHandler(BaseHandler):
     def get(self):
@@ -57,6 +56,7 @@ class Html5UploadFileSliceAPIHandler(BaseHandler):
 
         self.user_id = "0"#self.current_user.get("user_id", u"").encode("utf8")
         content = base64.b64decode(self.get_argument("content", ""))
+        logger.info("content_size %i" % len(content))
         self.filename = self.get_argument("name", "")
         start = long(self.get_argument("start"))
         size = long(self.get_argument("size"))

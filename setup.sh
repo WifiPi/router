@@ -36,12 +36,14 @@ apt-get install -y mpg123
 apt-get install -y supervisor
 
 apt-get install -y nginx
-apt-get install -y mysql-server
 apt-get install -y python-mysqldb
 
 apt-get install -y mtools
 apt-get install -y ntfsprogs
 apt-get install -y e2fsprogs
+
+apt-get install -y sqlite3
+apt-get remove -y mysql-server
 
 #host=192.168.1.100
 #wget --recursive http://$host/

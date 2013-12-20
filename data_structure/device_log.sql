@@ -1,8 +1,7 @@
 CREATE TABLE `device_log` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ipv4` varchar(15) NOT NULL DEFAULT '',
-  `mac` varchar(17) NOT NULL,
-  `name` varchar(30) NOT NULL DEFAULT '',
-  `datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` INTEGER NOT NULL PRIMARY KEY,
+  `ipv4` TEXT NOT NULL DEFAULT '',
+  `mac` TEXT NOT NULL,
+  `name` TEXT NOT NULL DEFAULT '',
+  `datetime` DEFAULT CURRENT_TIMESTAMP
+);

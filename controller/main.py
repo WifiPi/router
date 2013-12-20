@@ -11,15 +11,12 @@ import base64
 import hashlib
 import time
 import shutil
-from StringIO import StringIO
 
-import tornado.options
-import tornado.ioloop
+#import tornado.ioloop
 import tornado.web
-
-import tornado.template
-import tornado.auth
-import tornado.locale
+#import tornado.template
+#import tornado.auth
+#import tornado.locale
 
 #import markdown2
 from tornado_ses import EmailHandler

@@ -1,6 +1,5 @@
 CREATE TABLE `users` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `login` varchar(255) NOT NULL DEFAULT '',
-  `password` varchar(64) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `id` INTEGER NOT NULL PRIMARY KEY,
+  `login` TEXT NOT NULL DEFAULT '',
+  `password` TEXT NOT NULL DEFAULT ''
+);
