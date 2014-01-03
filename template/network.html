@@ -39,13 +39,21 @@
 <div class="container">
 
     <div class="row" style="border: 1px solid black; padding: 10px; margin: 10px 0 10px 0;">
-        <label>WIFI SSID</label>
+        <label>You want to</label>
+        <select id="wifi-mode-select">
+            <option {{ 'selected' if wifi_mode == 'create' else '' }} value="create">Create a WIFI</option>
+            <option {{ 'selected' if wifi_mode == 'join' else '' }} value="join">Join a WIFI</option>
+        </select>
+        <br />
+        <br />
+
+        <label>WIFI Name</label>
         <input id="ssid" type="text" value="{{ ssid }}"/>
         <br />
         <br />
 
         <label>Secure</label>
-        <select id="wifi-password-select">
+        <select id="wifi-secure-select">
             <option {{ 'selected' if secure == 'none' else '' }} value="none">None</option>
             <option {{ 'selected' if secure == 'wpa2' else '' }} value="wpa2">WPA2</option>
         </select>
@@ -63,7 +71,7 @@
         <button id="wifi-save" type="button" class="btn">SAVE and RESTART WIFI</button>
     </div>
 
-    <div style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
+    <div id="wan-panel" class="{{ 'hide' if wifi_mode == 'join' else '' }}" style="border: 1px solid orange; padding: 10px; margin: 0 0 10px 0;">
         <label>WAN</label>
         <select id="wan-connect-type">
             <option {{ 'selected' if wan == 'pppoe' else '' }} value="pppoe">PPPoE</option>
@@ -104,7 +112,7 @@
         </div>
     </div>
 
-    <div id="lan-panel" style="border: 1px solid green; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
+    <div id="lan-panel" class="{{ 'hide' if wifi_mode == 'join' else '' }}" style="border: 1px solid green; background-color: yellow; padding: 10px; margin: 0 0 10px 0;">
         <label>LAN IP Range</label>
         <select id="lan-ip-range">
             <option {{ 'selected' if router_ip.startswith('192') else '' }}>192</option>

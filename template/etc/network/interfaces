@@ -4,13 +4,20 @@ iface lo inet loopback
 iface eth0 inet dhcp
 
 allow-hotplug wlan0
+{% if wifi_mode == 'join' %}
+auto wlan0
+iface wlan0 inet dhcp
+wpa-ssid "{{ ssid }}"
+wpa-psk "{{ ssid_password }}"
+{% else %}
 iface wlan0 inet static 
 address {{ router_ip }}
 netmask {{ router_mask }}
+{% end if %}
 
 iface default inet dhcp
 
-{% if wan == 'pppoe' %}
+{% if wan == 'pppoe' and wifi_mode == 'create' %}
 auto dsl-provider
 iface dsl-provider inet ppp
 pre-up /sbin/ifconfig eth0 up # line maintained by pppoeconf

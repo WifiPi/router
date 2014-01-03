@@ -21,6 +21,8 @@ if __name__ == "__main__":
     data = {
         "mac": sys.argv[2],
         "ipv4": sys.argv[3],
-        "name": sys.argv[4],
     }
+    if len(sys.argv) > 4:
+    	data["name"] = sys.argv[4]
+
     urllib2.urlopen("http://127.0.0.1/api/device/add", urllib.urlencode(data))

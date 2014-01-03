@@ -94,6 +94,7 @@ def save(settings):
         #assert 'ssid' in settings
         #return
 
+    assert 'wifi_mode' in settings
     assert 'ssid' in settings
     assert 'ssid_password' in settings
     assert 'router_ip' in settings
@@ -103,26 +104,31 @@ def save(settings):
     assert 'secure' in settings
 
     #hostapd
-    with open(root_path + "etc/hostapd/hostapd.conf", "w") as f:
+    with open("%setc/hostapd/hostapd.conf" % root_path, "w") as f:
         print >> f, loader.load("etc/hostapd/hostapd.conf").generate(**settings)
 
     #dnsmasq
-    with open(root_path + "etc/dnsmasq.conf", "w") as f:
+    with open("%setc/dnsmasq.conf" % root_path, "w") as f:
         print >> f, loader.load("etc/dnsmasq.conf").generate(**settings)
 
     #network interface
-    with open(root_path + "etc/network/interfaces", "w") as f:
+    with open("%setc/network/interfaces" % root_path, "w") as f:
         print >> f, loader.load("etc/network/interfaces").generate(**settings)
 
     #ignore sysctl.conf
 
     #reinstall watch-wlan0
-    with open(root_path + "etc/init.d/watch-wlan0", "w") as f:
+    with open("%setc/init.d/watch-wlan0" % root_path, "w") as f:
         print >> f, loader.load("etc/init.d/watch-wlan0").generate(**settings)
 
 def load():
-    result = {"wan":"dhcp"}
-    with open(root_path + "etc/hostapd/hostapd.conf", "r") as f:
+    result = {
+        "wifi_mode": "create",
+        "wan": "dhcp",
+        "router_ip": "10.0.0.1",
+        "router_mask": "255.255.0.0"
+    }
+    with open("%setc/hostapd/hostapd.conf" % root_path, "r") as f:
         for i in f.readlines():
             if i.startswith("ssid="):
                 line = i.strip()
@@ -138,13 +144,13 @@ def load():
             result["secure"] = "none"
             result["ssid_password"] = ""
 
-    with open(root_path + "etc/dnsmasq.conf", "r") as f:
+    with open("%setc/dnsmasq.conf" % root_path, "r") as f:
         for i in f.readlines():
             if i.startswith("ssid="):
                 line = i.strip()
                 result["ssid"] = line[len("ssid="):]
 
-    with open(root_path + "etc/network/interfaces", "r") as f:
+    with open("%setc/network/interfaces" % root_path, "r") as f:
         for i in f.readlines():
             if i.startswith("address "):
                 line = i.strip()
@@ -157,12 +163,15 @@ def load():
             elif i.startswith("auto dsl-provider"):
                 result["wan"] = "pppoe"
 
-    with open(root_path + "etc/ppp/peers/dsl-provider", "r") as f1:
+            elif i.startswith("wpa-ssid"):
+                result["wifi_mode"] = "join"
+
+    with open("%setc/ppp/peers/dsl-provider" % root_path, "r") as f1:
         for i in f1.readlines():
             if i.startswith("user "):
                 result["pppoe_username"] = i.strip()[len("user "):].strip('"')
 
-                with open(root_path + "etc/ppp/pap-secrets", "r") as f2:
+                with open("%setc/ppp/pap-secrets" % root_path, "r") as f2:
                     for i in f2.readlines():
                         if i.startswith('"%s"' % result["pppoe_username"]):
                             result["pppoe_password"] = i.strip()[len('"%s" * ' % result["pppoe_username"]):].strip('"')
@@ -201,6 +210,7 @@ class NetworkChangeAPIHandler(BaseHandler):
             return
 
         save({
+            'wifi_mode': 'create',
             'ssid': 'LongPlay',
             'ssid_password': 'raspberry',
             'secure': 'wpa2',
@@ -226,6 +236,7 @@ class NetworkWifiAPIHandler(BaseHandler):
         settings = load()
         secure = self.get_argument("secure")
         settings['secure'] = secure
+        settings['wifi_mode'] = self.get_argument("wifi_mode")
         settings['ssid'] = self.get_argument("ssid")
 
         if secure == "wpa2":
@@ -238,8 +249,21 @@ class NetworkWifiAPIHandler(BaseHandler):
         save(settings)
         self.finish({})
 
-        os.system("/etc/init.d/hostapd restart")
-        os.system("/etc/init.d/watch-wlan0")
+        if settings['wifi_mode'] == "join":
+            os.system("update-rc.d watch-wlan0 disable 2")
+            os.system("update-rc.d dnsmasq disable 2")
+            os.system("update-rc.d hostapd disable 2")
+
+            os.system("/etc/init.d/hostapd stop")
+            os.system("/etc/init.d/dnsmasq stop")
+            os.system("/etc/init.d/networking restart")
+        else:
+            os.system("update-rc.d watch-wlan0 enable 2")
+            os.system("update-rc.d dnsmasq enable 2")
+            os.system("update-rc.d hostapd enable 2")
+
+            os.system("/etc/init.d/hostapd restart")
+            os.system("/etc/init.d/watch-wlan0")
 
 class NetworkWanAPIHandler(BaseHandler):
     def post(self):

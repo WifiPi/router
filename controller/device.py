@@ -81,7 +81,7 @@ class DeviceAddAPIHandler(BaseHandler):
     def post(self):
         mac = self.get_argument("mac")
         ipv4 = self.get_argument("ipv4")
-        name = self.get_argument("name")
+        name = self.get_argument("name", "")
         conn.execute("INSERT INTO device_log (ipv4, mac, name) VALUES (%s, %s, %s)", ipv4, mac, name)
         devices[ipv4] = name
 

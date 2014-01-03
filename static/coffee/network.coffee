@@ -1,16 +1,26 @@
 
 $ ->
-    $("#wifi-password-select").change ->
+    $("#wifi-mode-select").change ->
+        if this.value == "join"
+            $("#wan-panel").hide()
+            $("#lan-panel").hide()
+        else
+            $("#wan-panel").show()
+            $("#lan-panel").show()
+
+    $("#wifi-secure-select").change ->
         if this.value == "none"
             $(".wifi-password-panel").hide()
         else
             $(".wifi-password-panel").show()
 
     $("#wifi-save").click ->
+        wifi_mode = $("#wifi-mode-select").val()
         ssid = $("#ssid").val()
-        if $("#wifi-password-select").val() == "wpa2"
+        if $("#wifi-secure-select").val() == "wpa2"
             ssid_password = $("#ssid_password").val()
             $.post "/api/network/wifi",
+                "wifi_mode": wifi_mode
                 "ssid": ssid
                 "ssid_password": ssid_password
                 "secure": "wpa2"
