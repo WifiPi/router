@@ -26,6 +26,7 @@ $ ->
                 "secure": "wpa2"
         else
             $.post "/api/network/wifi",
+                "wifi_mode": wifi_mode
                 "ssid": ssid
                 "secure": "none"
 
