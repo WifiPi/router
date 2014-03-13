@@ -31,7 +31,7 @@ from controller import event
 from controller import files
 
 handlers = [
-    (r"/", event.EventHandler),
+    (r"/", main.MainHandler),
     (r"/event", event.EventHandler),
     (r"/admin/event", event.EventAdminHandler),
     (r"/admin/event/slide/preview", event.EventAdminPreviewHandler),

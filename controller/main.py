@@ -31,6 +31,11 @@ from controller.base import *
 import music
 
 
+class MainHandler(BaseHandler):
+    def get(self):
+        self.redirect("/network")
+
+
 class LoginHandler(BaseHandler, EmailHandler):
     def get(self):
         self.email = self.get_argument("email", u"")
@@ -44,7 +49,7 @@ class LoginHandler(BaseHandler, EmailHandler):
         if user and user["password"] == hashlib.sha1(password).hexdigest():
             user_id = user["id"]
             self.set_secure_cookie("user", tornado.escape.json_encode({"user_id": user_id, "time": time.time()}))
-            self.redirect("/?status=login")
+            self.redirect("/network")
             return
 
         self.redirect("/login?status=error")
